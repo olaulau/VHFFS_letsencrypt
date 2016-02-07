@@ -9,16 +9,25 @@
 if(empty($_POST)) {
 	?>
 	<form action="" method="POST">
+	<fieldset>
+  		<legend>Informations :</legend>
 		<label for="email">e-mail</label> <input type="text" name="email" value="" /> <br/>
 		<label for="domain">domain</label> <input type="text" name="domain" value="" /> <br/>
-		<label for="webroot">webroot</label> <input type="text" name="webroot" value="" /> <br/>
+		<label for="webroot-path">webroot path</label> <input type="text" name="webroot-path" value="" /> <br/>
+		
+		<label for="rsa-key-size">rsa key size</label>
+		<select name="rsa-key-size">
+			<option value="2048">2048</option>
+			<option value="4096">4096</option>
+		</select> <br/>
 		<button type="submit"> SEND </button>
+	</fieldset>
 	</form>
 	<?php
 }
 else {
 	// TODO : check params
-	if( empty($_POST['email']) || empty($_POST['domain']) || empty($_POST['webroot']) ) {
+	if( empty($_POST['email']) || empty($_POST['domain']) || empty($_POST['webroot-path']) || empty($_POST['rsa-key-size']) ) {
 		die('parameter problem');
 	}
 	
@@ -30,8 +39,8 @@ else {
 '/root/letsenfrypt/letsencrypt-auto certonly -v --text --agree-tos --renew-by-default \
 --email "' . $_POST['email'] . '" \
 --domain "' . $_POST['domain'] . '" \
---rsa-key-size 4096 \
---webroot --webroot-path "' . $_POST['webroot'] . '"';
+--rsa-key-size ' . $_POST['rsa-key-size'] . ' \
+--webroot --webroot-path "' . $_POST['webroot-path'] . '"';
 	echo '<h3>let\'s encrypt command :</h3> <pre>' . $le_command . '</pre>';
 	
 	$ng_conf = 
@@ -64,7 +73,3 @@ else {
 ?>
 </body>
 </html>
-
-
-
-
