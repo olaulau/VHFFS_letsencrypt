@@ -1,7 +1,7 @@
 #! /usr/bin/php
 <?php
 
-require_once 'config.inc.php';
+require_once __DIR__.'/includes/config.inc.php';
 
 //  load content from JSON file
 $content = json_decode(file_get_contents($conf['content_filename']), TRUE);

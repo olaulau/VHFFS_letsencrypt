@@ -1,14 +1,74 @@
 <?php
+session_start();
 
-require_once 'functions.inc.php';
-require_once 'config.inc.php';
+require_once __DIR__.'/includes/functions.inc.php';
+require_once __DIR__.'/includes/config.inc.php';
+require_once __DIR__.'/includes/admin.class.php';
 
+Admin::restrict();
 ?>
-<html>
+
+<!DOCTYPE html>
+<html lang="en">
 <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<title>VHFFS letsencrypt</title>
 	
+	<!-- Bootstrap -->
+	<link href="external/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="external/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+	
+	<link href="index.css" rel="stylesheet">
+	
+	
+	
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+	      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	    <![endif]-->
+	
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script src="external/jquery.min.js"></script>
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script src="external/bootstrap/js/bootstrap.min.js"></script>
+	
+	<script src="index.js"></script>
 </head>
 <body>
+
+<div class="container" role="main">
+<?php
+if(!empty($_SESSION['messages'])) {
+	foreach ($_SESSION['messages'] as $message) {
+		?>
+		<div class="alert alert-success " role="alert">
+			<?=$message?>
+		</div>
+		<?php
+	}
+	unset($_SESSION['messages']);
+}
+?>
+</div>
+
+<?php
+if(Admin::is_admin()) {
+	?>
+	<a href="auth/signout.php"><button type="button" class="btn btn-lg btn-primary pull-right">Log out</button></a>
+	<?php
+}
+else {
+	?>
+	<a href="auth/signin.php"><button type="button" class="btn btn-lg btn-primary pull-right">Log in</button></a>
+	<?php
+}
+?>
+
 <?php
 //  print_r($_POST);
 if(empty($_POST)) {
