@@ -1,6 +1,7 @@
 <?php
 
 require_once 'functions.inc.php';
+require_once 'config.inc.php';
 
 ?>
 <html>
@@ -46,6 +47,9 @@ else {
 	echo '<h3>nginx config enable :</h3> <pre>' . $content['ng_conf_enable'] . '</pre>';
 	
 	echo '<h3>nginx config reload :</h3> <pre>' . $content['ng_conf_activation'] . '</pre>';
+	
+	file_put_contents($conf['content_filename'] , json_encode($content));
+	echo 'content saved into disk file. try running \'sudo php script.php\'.';
 }
 ?>
 </body>

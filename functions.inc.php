@@ -1,5 +1,7 @@
 <?php
 
+require_once 'config.inc.php';
+
 
 function verify_parameters() {
 	if( empty($_POST['email']) || empty($_POST['domain']) || empty($_POST['webroot-path']) || empty($_POST['rsa-key-size']) ) {
@@ -11,10 +13,11 @@ function verify_parameters() {
 
 
 function get_commands() {
+	global $conf;
 	$content = array();
 	
 	$content['le_command'] =
-	'/root/letsenfrypt/letsencrypt-auto certonly -v --text --agree-tos --renew-by-default \
+	$conf['letsencrypt_path'] . '/letsencrypt-auto certonly -v --text --agree-tos --renew-by-default \
 --email "' . $_POST['email'] . '" \
 --domain "' . $_POST['domain'] . '" \
 --rsa-key-size ' . $_POST['rsa-key-size'] . ' \
