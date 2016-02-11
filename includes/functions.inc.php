@@ -42,7 +42,10 @@ function get_commands($array) {
 	
 	$content['ng_conf_file'] = '/etc/nginx/sites-available/' . $array['domain'] . '';
 	
-	$content['ng_conf_enable'] = 'ln -s /etc/nginx/sites-available/' . $array['domain'] . ' /etc/nginx/sites-enabled/' . $array['domain'] . '';
+	$content['ng_conf_enable'] = array(
+			'rm -f /etc/nginx/sites-enabled/' . $array['domain'], 
+			'ln -s /etc/nginx/sites-available/' . $array['domain'] . ' /etc/nginx/sites-enabled/' . $array['domain']
+	);			
 	
 	$content['ng_conf_activation'] = 'service nginx reload';
 	

@@ -1,6 +1,6 @@
 - utilité de log4php dans le code actuel ? garder pour après ?
 - sécuriser : content avec les infos saisies, vérif et transformation côté script									OK
-- script : gérer cas d'erreur																						x
+- script : gérer cas d'erreur																						OK
 - possibilité config redirection automatique vers HTTPS only
 - rabbitmq																											x
     - installer

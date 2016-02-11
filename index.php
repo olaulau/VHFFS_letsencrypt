@@ -137,7 +137,11 @@ else {
 	
 	echo '<h3>nginx config file :</h3> <pre>' . $commands['ng_conf_file'] . '</pre>';
 	
-	echo '<h3>nginx config enable :</h3> <pre>' . $commands['ng_conf_enable'] . '</pre>';
+	echo '<h3>nginx config enable :</h3> <pre>';
+	foreach ($commands['ng_conf_enable'] as $command) {
+		echo $command . "\n";
+	}
+	echo '</pre>';
 	
 	echo '<h3>nginx config reload :</h3> <pre>' . $commands['ng_conf_activation'] . '</pre>';
 }
