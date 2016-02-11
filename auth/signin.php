@@ -1,3 +1,12 @@
+<?php
+if(!empty($_GET['redirect'])) {
+	$redirect = $_GET['redirect'];
+}
+else {
+	$redirect =$_SERVER['HTTP_REFERER'];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -45,7 +54,7 @@
 <!--           </label> -->
 <!--         </div> -->
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-        <input type="hidden" name="redirect" value="<?= $_SERVER['HTTP_REFERER'] ?>">
+        <input type="hidden" name="redirect" value="<?= $redirect ?>">
       </form>
 
     </div> <!-- /container -->

@@ -10,7 +10,7 @@ if(!empty($_POST['login']) && !empty($_POST['password'])) {
 		if( password_verify($_POST['password'], $conf['admins'][$_POST['login']]) ) {
 			$_SESSION['admin'] = TRUE;
 			$_SESSION['messages'][] = 'successfully signed in';
-			header("Location: ".$_POST['redirect']);
+			header("Location: ../".$_POST['redirect']);
 		}
 		else {
 			sleep(3);

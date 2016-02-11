@@ -5,7 +5,7 @@ require_once __DIR__.'/includes/functions.inc.php';
 require_once __DIR__.'/includes/config.inc.php';
 require_once __DIR__.'/includes/admin.class.php';
 
-Admin::restrict();
+Admin::restrict('./');
 ?>
 
 <!DOCTYPE html>

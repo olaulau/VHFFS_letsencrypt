@@ -6,9 +6,9 @@ class Admin {
 		return (isset($_SESSION['admin']) && $_SESSION['admin'] === TRUE);
 	}
 	
-	public static function restrict() {
+	public static function restrict($redirect) {
 		if(!Admin::is_admin()) {
-			header('Location: '.'auth/signin.php');
+			header('Location: '.'auth/signin.php?redirect='.$redirect);
 		}
 	}
 }

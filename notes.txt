@@ -1,0 +1,10 @@
+queues :
+
+http://raivoratsep.com/161/simple-php-task-queue/
+
+https://en.wikipedia.org/wiki/Message_queue
+http://queues.io/
+https://www.quora.com/What-are-the-advantages-and-disadvantages-of-Beanstalkd-as-a-work-queue
+https://www.rabbitmq.com/install-debian.html
+https://github.com/videlalvaro/php-amqplib
+
