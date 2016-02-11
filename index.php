@@ -115,24 +115,31 @@ foreach ($conf['rsa-key-sizes'] as $key_size) {
 }
 
 else {
-	verify_parameters();
-	
-	$content = get_commands();
-	
-?><h2>to be executed by root</h2><?php
-	
-	echo '<h3>let\'s encrypt command :</h3> <pre>' . $content['le_command'] . '</pre>';
-	
-	echo '<h3>nginx config :</h3> <pre>' . $content['ng_conf'] . '</pre>';
-	
-	echo '<h3>nginx config file :</h3> <pre>' . $content['ng_conf_file'] . '</pre>';
-	
-	echo '<h3>nginx config enable :</h3> <pre>' . $content['ng_conf_enable'] . '</pre>';
-	
-	echo '<h3>nginx config reload :</h3> <pre>' . $content['ng_conf_activation'] . '</pre>';
+	$content = array(
+			'email' => $_POST['email'],
+			'domain' => $_POST['domain'],
+			'webroot-path' => $_POST['webroot-path'],
+			'rsa-key-size' => $_POST['rsa-key-size']
+	);
+	verify_parameters($content);
 	
 	file_put_contents($conf['content_filename'] , json_encode($content));
-	echo 'content saved into disk file. try running \'sudo php script.php\'.';
+	echo 'content saved into disk file. try running \'sudo php script.php\'. <br/>';
+	
+	
+	//  just for tests, still displaying generated commands
+	$commands = get_commands($content);
+?><h2>to be executed by root</h2><?php
+	
+	echo '<h3>let\'s encrypt command :</h3> <pre>' . $commands['le_command'] . '</pre>';
+	
+	echo '<h3>nginx config :</h3> <pre>' . $commands['ng_conf'] . '</pre>';
+	
+	echo '<h3>nginx config file :</h3> <pre>' . $commands['ng_conf_file'] . '</pre>';
+	
+	echo '<h3>nginx config enable :</h3> <pre>' . $commands['ng_conf_enable'] . '</pre>';
+	
+	echo '<h3>nginx config reload :</h3> <pre>' . $commands['ng_conf_activation'] . '</pre>';
 }
 ?>
 </body>

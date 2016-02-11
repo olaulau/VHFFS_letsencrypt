@@ -1,10 +1,11 @@
 - utilité de log4php dans le code actuel ? garder pour après ?
-- sécuriser : content avec les infos saisies, vérif et transformation côté script
-- script : gérer cas d'erreur
+- sécuriser : content avec les infos saisies, vérif et transformation côté script									OK
+- script : gérer cas d'erreur																						x
 - possibilité config redirection automatique vers HTTPS only
-- rabbitmq
+- rabbitmq																											x
     - installer
     - code d'exemple
+    - index producteur, script consommateur
 - vhffs db
     - connexion postgresql VHFFS
     - fonction hash mdp vhffs ? (login admindl direct)
