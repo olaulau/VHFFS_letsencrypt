@@ -96,8 +96,12 @@ if(empty($_POST)) {
 				<label for="rsa-key-size" class="col-sm-2 control-label">rsa-key-size</label>
 				<div class="col-sm-4">
 					<select class="form-control" name="rsa-key-size">
-						<option value="2048">2048</option>
-						<option value="4096">4096</option>
+<?php
+foreach ($conf['rsa-key-sizes'] as $key_size) {
+	echo 
+'						<option value="' . $key_size . '">' . $key_size . '</option>';
+}
+?>
 					</select>
 				</div>
 			</div> <br/>
