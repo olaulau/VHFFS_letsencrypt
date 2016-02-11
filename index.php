@@ -11,37 +11,37 @@ Admin::restrict('./');
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-	<title>VHFFS letsencrypt</title>
-	
-	<!-- Bootstrap -->
-	<link href="external/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-	<link href="external/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
-	
-	<link href="index.css" rel="stylesheet">
-	
-	
-	
-	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
-	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-	<!--[if lt IE 9]>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+<title>VHFFS letsencrypt</title>
+
+<!-- Bootstrap -->
+<link href="external/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+<link href="external/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+
+<link href="index.css" rel="stylesheet">
+
+
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
 	      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 	      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	    <![endif]-->
-	
-	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-	<script src="external/jquery.min.js"></script>
-	<!-- Include all compiled plugins (below), or include individual files as needed -->
-	<script src="external/bootstrap/js/bootstrap.min.js"></script>
-	
-	<script src="index.js"></script>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="external/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="external/bootstrap/js/bootstrap.min.js"></script>
+
+<script src="index.js"></script>
 </head>
 <body>
 
-<div class="container" role="main">
+	<div class="container" role="main">
 <?php
 if(!empty($_SESSION['messages'])) {
 	foreach ($_SESSION['messages'] as $message) {
@@ -74,19 +74,38 @@ else {
 if(empty($_POST)) {
 	?>
 	<form action="" method="POST">
-	<fieldset>
-  		<legend>Informations :</legend>
-		<label for="email">e-mail</label> <input type="text" name="email" value="" /> <br/>
-		<label for="domain">domain</label> <input type="text" name="domain" value="" /> <br/>
-		<label for="webroot-path">webroot path</label> <input type="text" name="webroot-path" value="" /> <br/>
+		<fieldset>
+		<legend>Informations :</legend>
 		
-		<label for="rsa-key-size">rsa key size</label>
-		<select name="rsa-key-size">
-			<option value="2048">2048</option>
-			<option value="4096">4096</option>
-		</select> <br/>
-		<button type="submit"> SEND </button>
-	</fieldset>
+			<div class="form-group">
+				<label for="email" class="col-sm-2 control-label">e-mail</label>
+				<div class="col-sm-4"> <input type="email" name="email" value="" class="form-control" id="email" placeholder="e-mail"> </div>
+			</div> <br/>
+			
+			<div class="form-group">
+				<label for="domain" class="col-sm-2 control-label">domain</label>
+				<div class="col-sm-4"> <input type="text" name="domain" value="" class="form-control" id="domain" placeholder="domain"> </div>
+			</div> <br/>
+			
+			<div class="form-group">
+				<label for="webroot-path" class="col-sm-2 control-label">webroot path</label>
+				<div class="col-sm-4"> <input type="text" name="webroot-path" value="" class="form-control" id="webroot-path" placeholder="webroot path"> </div>
+			</div> <br/>
+			
+			<div class="form-group">
+				<label for="rsa-key-size" class="col-sm-2 control-label">rsa-key-size</label>
+				<div class="col-sm-4">
+					<select class="form-control" name="rsa-key-size">
+						<option value="2048">2048</option>
+						<option value="4096">4096</option>
+					</select>
+				</div>
+			</div> <br/>
+			
+			<div class="col-sm-6">
+				<button class="btn btn-default form-control" type="submit"> SEND </button>
+			</div>
+		</fieldset>
 	</form>
 	<?php
 }
@@ -96,7 +115,7 @@ else {
 	
 	$content = get_commands();
 	
-?><h2> to be executed by root</h2><?php
+?><h2>to be executed by root</h2><?php
 	
 	echo '<h3>let\'s encrypt command :</h3> <pre>' . $content['le_command'] . '</pre>';
 	
