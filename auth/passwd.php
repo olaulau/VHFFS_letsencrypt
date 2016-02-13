@@ -11,8 +11,8 @@
     <title>Signin Template for Bootstrap</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="../../external/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="../../external/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../external/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../external/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="signin.css" rel="stylesheet">
