@@ -1,20 +1,20 @@
 - utilité de log4php dans le code actuel ? garder pour après ?
 - sécuriser : content avec les infos saisies, vérif et transformation côté script									OK
 - script : gérer cas d'erreur																						OK
-- possibilité config redirection automatique vers HTTPS only
-- rabbitmq																											x
-    - installer
-    - code d'exemple
-    - index producteur, script consommateur
-- vhffs db
-    - connexion postgresql VHFFS
-    - fonction hash mdp vhffs ? (login admindl direct)
-    - liste user project domains avec webroot (calculé ?)
-- interface visu
-    - saisie juste un domaine, fais le reste
-    - recherche par user project domain avec auto complétion , filtrage live (penser gros volume)
-    - affichage stats HTTPS, demandes en cours
-    - possibilité d'erreur, afficher logs, annulation, relance ultérieure
-- renouvellement automatique
-    - mémoriser l'etat et la date des certificats
-    - cron chaque jour, renouveler ceux à qui il reste moins d'un mois (utiliser la file de messages aussi)
+- possibilité config redirection automatique vers HTTPS only														xxx
+- RabbitMQ																											x
+	- installer																										OK
+	- code d'exemple AMQP																							OK
+	- index producteur, script consommateur																			...
+- vhffs db																											x
+	- connexion postgresql VHFFS																					x
+	- liste user project domains avec webroot (calculé ?)															x
+	- fonction hash mdp vhffs ? (login admindl direct)																xxx
+- interface visu																									x
+	- saisie juste un domaine, fais le reste																		x
+	- recherche par user project domain avec auto complétion , filtrage live (penser gros volume)					x
+	- affichage stats HTTPS, demandes en cours																		xxx
+	- possibilité d'erreur, afficher logs, annulation, relance ultérieure											xxx
+- renouvellement automatique																						x
+	- mémoriser l'etat et la date des certificats																	x
+	- cron chaque jour, renouveler ceux à qui il reste moins d'un mois (utiliser la file de messages aussi)			x

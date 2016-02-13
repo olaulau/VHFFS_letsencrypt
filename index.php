@@ -123,8 +123,13 @@ else {
 	);
 	verify_parameters($content);
 	
+	//  write content to disk
 	file_put_contents($conf['content_filename'] , json_encode($content));
 	echo 'content saved into disk file. try running \'sudo php script.php\'. <br/>';
+	
+	//  put content into queue
+	put_content_into_queue($content);
+	echo 'content added to queue. it will be treated as soon as possible. <br/>';
 	
 	
 	//  just for tests, still displaying generated commands
