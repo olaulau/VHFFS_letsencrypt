@@ -81,7 +81,7 @@ function treat_content($content) {
 	echo '<h3>nginx config :</h3> <pre>' . $commands['ng_conf'] . '</pre>' . "\n";
 	echo '<h3>nginx config file :</h3> <pre>' . $commands['ng_conf_file'] . '</pre>' . "\n";
 	$return_var = file_put_contents($commands['ng_conf_file'], $commands['ng_conf']);
-	if($return_var !== 0) {
+	if($return_var === FALSE) {
 		echo 'RETURN = ' .  $return_var . "\n";
 		die;
 	}
