@@ -10,7 +10,9 @@ Let's Encrypt automating for VHFFS hosting with Nginx HTTPS front
 - RabbitMQ 
 	- install : `apt-get install rabbitmq-server`
 	- enable managment plugin : `rabbitmq-plugins enable rabbitmq_management`
+		- old distrib : `/usr/lib/rabbitmq/lib/rabbitmq_server-2.7.1/sbin/rabbitmq-plugins enable rabbitmq_management` and then `service rabbitmq-server restart`
 	- go to admin : `http://localhost:15672/` with default account : guest / guest
+		- old distrib : `http://localhost:55672/`
 	- you can create a new admin account, and then delete the default guest account
 	- create a user account for your app, and a virtualhost if you want
 	- fill-in the config file with those informations

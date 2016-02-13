@@ -64,7 +64,7 @@ function treat_content($content) {
 	
 	//  generate commands
 	$commands = get_commands($content);
-	echo "<pre>"; print_r($commands); echo "/<pre>"; return;
+// 	echo "<pre>"; print_r($commands); echo "/<pre>"; return;
 	
 	//  let's encrypt command execution
 	echo '<h3>let\'s encrypt command :</h3> <pre>' . $commands['le_command'] . '</pre>' . "\n";
