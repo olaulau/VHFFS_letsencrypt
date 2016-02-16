@@ -2,22 +2,22 @@
 - sécuriser : content avec les infos saisies, vérif et transformation côté script									OK
 - script : gérer cas d'erreur																						OK
 - possibilité config redirection automatique vers HTTPS only														xxx
-- RabbitMQ																											x
+- RabbitMQ																											
 	- installer																										OK
 	- code d'exemple AMQP																							OK
 	- index producteur, script consommateur																			OK
-- vhffs db																											x
-	- connexion postgresql VHFFS																					x
+- vhffs db																											
+	- connexion postgresql VHFFS																					OK
 	- liste user project domains avec webroot (calculé ?)															x
 	- fonction hash mdp vhffs ? (login admindl direct)																xxx
-- interface visu																									x
-	- saisie juste un domaine, fais le reste																		x
+- interface visu																									
+	- saisie juste un domaine, fais le reste																		OK
 	- recherche par user project domain avec auto complétion , filtrage live (penser gros volume)					x
 	- affichage stats HTTPS, demandes en cours																		xxx
 	- possibilité d'erreur, afficher logs, annulation, relance ultérieure											xxx
-- renouvellement automatique																						x
+- renouvellement automatique																						
 	- mémoriser l'etat et la date des certificats																	x
 	- cron chaque jour, renouveler ceux à qui il reste moins d'un mois (utiliser la file de messages aussi)			x
-- technique
+- technique																											
 	- enlever dépendances et les faire installer avec composer														
 	- utilité de log4php dans le code actuel ? garder pour après ?													

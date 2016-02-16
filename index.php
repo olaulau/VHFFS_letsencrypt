@@ -126,32 +126,9 @@ else {
 
 	verify_parameters($content);
 	
-	//  write content to disk
-	file_put_contents($conf['content_filename'] , json_encode($content));
-	echo 'content saved into disk file. try running \'sudo php script.php\'. <br/>';
-	
 	//  put content into queue
 	put_content_into_queue($content);
 	echo 'content added to queue. it will be treated as soon as possible. <br/>';
-	
-	
-	//  just for tests, still displaying generated commands
-	$commands = get_commands($content);
-?><h2>to be executed by root</h2><?php
-	
-	echo '<h3>let\'s encrypt command :</h3> <pre>' . $commands['le_command'] . '</pre>';
-	
-	echo '<h3>nginx config :</h3> <pre>' . $commands['ng_conf'] . '</pre>';
-	
-	echo '<h3>nginx config file :</h3> <pre>' . $commands['ng_conf_file'] . '</pre>';
-	
-	echo '<h3>nginx config enable :</h3> <pre>';
-	foreach ($commands['ng_conf_enable'] as $command) {
-		echo $command . "\n";
-	}
-	echo '</pre>';
-	
-	echo '<h3>nginx config reload :</h3> <pre>' . $commands['ng_conf_activation'] . '</pre>';
 }
 ?>
 </body>

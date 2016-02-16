@@ -24,5 +24,11 @@ Let's Encrypt automating for VHFFS hosting with Nginx HTTPS front
 - [jquery](https://jquery.com/)
 - [php-amqpli](https://github.com/php-amqplib/php-amqplib)
 
-### Instructions :
-- you have to start the `consumer_script.php` as root
+### Installation :
+- just clone the project : `git clone https://github.com/olaulau/VHFFS_letsencrypt`
+- don't forget to copy and modify the config file : `includes/config.inc.EXAMPLE.php`
+
+### Running :
+- to consume the queue, you have to start the `consumer_script.php` as root :
+	- `screen -S VHFFS_letsencrypt`
+	- `./consumer_script.php | tee -a consumer_script.log`
