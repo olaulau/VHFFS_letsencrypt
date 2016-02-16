@@ -116,6 +116,10 @@ function treat_content($content) {
 		echo 'RETURN = ' .  $return_var . "\n";
 		die;
 	}
+	
+	echo 'end of treatment.' . "\n";
+	echo '-----------------------------------------------------' . "\n";
+	echo "\n";
 }
 
 

@@ -5,7 +5,7 @@
 - RabbitMQ																											x
 	- installer																										OK
 	- code d'exemple AMQP																							OK
-	- index producteur, script consommateur																			...
+	- index producteur, script consommateur																			OK
 - vhffs db																											x
 	- connexion postgresql VHFFS																					x
 	- liste user project domains avec webroot (calculé ?)															x
