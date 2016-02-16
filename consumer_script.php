@@ -20,7 +20,7 @@ if (posix_getuid() !== 0) {
 //  consume the queue
 $consumer_tag = 'consumer';
 
-$conn = new AMQPConnection($conf['rabbitmq_host'], $conf['rabbitmq_post'], $conf['rabbitmq_user'], $conf['rabbitmq_pass'], $conf['rabbitmq_vhost']);
+$conn = new AMQPConnection($conf['rabbitmq_host'], $conf['rabbitmq_port'], $conf['rabbitmq_user'], $conf['rabbitmq_pass'], $conf['rabbitmq_vhost']);
 $ch = $conn->channel();
 $ch->queue_declare($conf['rabbitmq_queue'], false, true, false, false);
 $ch->exchange_declare($conf['rabbitmq_exchange'], 'direct', false, true, false);

@@ -1,5 +1,7 @@
 .settings/
 .buildpath
 .project
+rsync.sh
+.externalToolBuilders/
 includes/config.inc.php
 /content.json

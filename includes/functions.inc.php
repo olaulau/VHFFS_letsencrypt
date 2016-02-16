@@ -117,6 +117,7 @@ function treat_content($content) {
 		die;
 	}
 	
+	echo "\n";
 	echo 'end of treatment.' . "\n";
 	echo '-----------------------------------------------------' . "\n";
 	echo "\n";
@@ -125,7 +126,7 @@ function treat_content($content) {
 
 function put_content_into_queue($content) {
 	global $conf;
-	$conn = new AMQPConnection($conf['rabbitmq_host'], $conf['rabbitmq_post'], $conf['rabbitmq_user'], $conf['rabbitmq_pass'], $conf['rabbitmq_vhost']);
+	$conn = new AMQPConnection($conf['rabbitmq_host'], $conf['rabbitmq_port'], $conf['rabbitmq_user'], $conf['rabbitmq_pass'], $conf['rabbitmq_vhost']);
 	$ch = $conn->channel();
 	
 	$ch->queue_declare($conf['rabbitmq_queue'], false, true, false, false);
