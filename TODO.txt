@@ -8,7 +8,7 @@
 	- index producteur, script consommateur																			OK
 - vhffs db																											
 	- connexion postgresql VHFFS																					OK
-	- liste user project domains avec webroot (calculé ?)															x
+	- liste user project domains																					x
 	- fonction hash mdp vhffs ? (login admindl direct)																xxx
 - interface visu																									
 	- saisie juste un domaine, fais le reste																		OK

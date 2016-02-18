@@ -47,7 +47,7 @@ Admin::restrict('./');
 if(!empty($_SESSION['messages'])) {
 	foreach ($_SESSION['messages'] as $message) {
 		?>
-		<div class="alert alert-success " role="alert">
+		<div class="alert alert-success" role="alert" style="position: absolute;">
 			<?=$message?>
 		</div>
 		<?php
@@ -57,23 +57,17 @@ if(!empty($_SESSION['messages'])) {
 ?>
 </div>
 
-<?php
-if(Admin::is_admin()) {
-	?>
-	<a href="auth/signout.php"><button type="button" class="btn btn-lg btn-primary pull-right">Log out</button></a>
-	<?php
-}
-else {
-	?>
-	<a href="auth/signin.php"><button type="button" class="btn btn-lg btn-primary pull-right">Log in</button></a>
-	<?php
-}
-?>
+<a href="auth/signout.php"><button type="button" class="btn btn-lg btn-primary pull-right" style="position: absolute; right: 0px;">Log out</button></a>
 
 <?php
 //  print_r($_POST);
 if(empty($_POST)) {
 	?>
+	<div style="text-align: center;">
+	<h1 class="form-signin-heading">VHFFS - Let's Encrypt</h1>
+	<h3 class="form-signin-heading">(automatic certificate request and install for VHFFS hosting)</h3>
+	</div>
+	<h4 class="form-signin-heading">please fill-in the form</h4>
 	<form action="" method="POST">
 		<fieldset>
 		<legend>Informations :</legend>
@@ -131,5 +125,7 @@ else {
 	echo 'content added to queue. it will be treated as soon as possible. <br/>';
 }
 ?>
+
+
 </body>
 </html>

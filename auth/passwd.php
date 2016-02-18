@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Signin Template for Bootstrap</title>
+    <title>Password hash generation</title>
 
     <!-- Bootstrap core CSS -->
     <link href="../external/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -34,20 +34,25 @@
 
       <form class="form-signin" action="passwd.php" method="post">
         <h2 class="form-signin-heading">Enter your pasword</h2>
-<!--         <label for="password" class="sr-only">Password</label> -->
+
         <input type="text" id="password" name="password" class="form-control" placeholder="Password" required value="<?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
-        <?php
-		if(!empty($_POST['password'])) {
-			echo nl2br('You can modify includes/config.inc.php with this value :' . PHP_EOL . password_hash($_POST['password'], PASSWORD_BCRYPT));
-		}
-		?>
-<!--         <div class="checkbox"> -->
-<!--           <label> -->
-<!--             <input type="checkbox" value="remember-me"> Remember me -->
-<!--           </label> -->
-<!--         </div> -->
+        
         <button class="btn btn-lg btn-primary btn-block" type="submit">generate</button>
       </form>
+	<?php
+	if(!empty($_POST['password'])) {
+		echo 'You can modify includes/config.inc.php with this value : <br/>';
+		echo '<pre>' . password_hash($_POST['password'], PASSWORD_BCRYPT) . '</pre>';
+		echo 'example : (in your includes/config.inc.php) <br/>';
+		echo "<pre>" . PHP_EOL . 
+    	"// admin users, open auth/passwd.php to create a password hash" . PHP_EOL . 
+		"\$conf['admins'] = array(" . PHP_EOL . 
+		"		'admin' => '" . password_hash($_POST['password'], PASSWORD_BCRYPT) . "'" . PHP_EOL . 
+		");" . PHP_EOL . 
+    	"</pre>";
+		
+	}
+	?>
 
     </div> <!-- /container -->
 
