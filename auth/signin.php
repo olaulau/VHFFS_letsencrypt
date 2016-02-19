@@ -38,7 +38,7 @@ else {
   </head>
 
   <body>
-	<a href="passwd.php"><button type="button" class="btn btn-lg btn-primary pull-right">generate password hash</button></a>
+	<a href="passwd.php"><button type="button" class="btn btn-lg btn-info pull-right">generate password hash</button></a>
 	
     <div class="container">
 
@@ -53,7 +53,7 @@ else {
 <!--             <input type="checkbox" value="remember-me"> Remember me -->
 <!--           </label> -->
 <!--         </div> -->
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
         <input type="hidden" name="redirect" value="<?= $redirect ?>">
       </form>
 

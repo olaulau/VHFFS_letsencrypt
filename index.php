@@ -57,29 +57,49 @@ if(!empty($_SESSION['messages'])) {
 ?>
 </div>
 
-<a href="auth/signout.php"><button type="button" class="btn btn-lg btn-primary pull-right" style="position: absolute; right: 0px;">Log out</button></a>
+<a href="auth/signout.php"><button type="button" class="btn btn-lg btn-danger pull-right" style="position: absolute; right: 0px;">Log out</button></a>
 
 <?php
 //  print_r($_POST);
 if(empty($_POST)) {
 	?>
 	<div style="text-align: center;">
-	<h1 class="form-signin-heading">VHFFS - Let's Encrypt</h1>
-	<h3 class="form-signin-heading">(automatic certificate request and install for VHFFS hosting)</h3>
+		<h1 class="form-signin-heading">VHFFS - Let's Encrypt</h1>
+		<h3 class="form-signin-heading">(automatic certificate request and install for VHFFS hosting)</h3>
 	</div>
-	<h4 class="form-signin-heading">please fill-in the form</h4>
-	<form action="" method="POST">
-		<fieldset>
-		<legend>Informations :</legend>
+	
+	<h4 class="form-signin-heading col-sm-offset-1">Please fill-in the form</h4>
+	
+	<form action="" method="POST" name="easyform" class="">
+			
+			<div class="row form-group-lg">
+				<div class="col-sm-4 col-md-offset-1 text-center form-group-lg">
+					<h4><label for="alpha-domain" class="">domains (alphabetical order)</label></h4>
+				</div>
+				<div class="col-sm-4 col-md-offset-2 text-center form-group-lg">
+					<h4><label for="project-domain" class="">domains (by project)</label></h4>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-4 col-md-offset-1 input-group-lg">
+					<select id="alpha-domain" class="form-control" name="alpha-domain"> </select>
+				</div>
+				<div class="col-sm-4 col-md-offset-2 input-group-lg">
+					<select id="project-domain" class="form-control" name="project-domain">	</select>
+				</div>
+			</div>
+			
+			<div class="row">&nbsp;</div>
+			
+			<input id="domain" name="domain" value="" style="display:none;">
+			
+			<div class="row">&nbsp;</div>
 			
 			<div class="form-group">
-				<label for="domain" class="col-sm-2 control-label">domain</label>
-				<div class="col-sm-4"> <select  id="domains" class="form-control" name="domain"> </select> </div>
-			</div> <br/>
-			
-			<div class="form-group">
-				<label for="rsa-key-size" class="col-sm-2 control-label">rsa-key-size</label>
-				<div class="col-sm-4">
+				<div class="row"> <div class="col-sm-2 col-md-offset-5 text-center form-group-lg"> <h4><label for="rsa-key-size" class="control-label">rsa-key-size</label></h4> </div> </div>
+				<div class="row">
+				<div class="col-sm-2 col-md-offset-5 input-group-lg">
 					<select class="form-control" name="rsa-key-size">
 <?php
 foreach ($conf['rsa-key-sizes'] as $key_size) {
@@ -95,18 +115,27 @@ foreach ($conf['rsa-key-sizes'] as $key_size) {
 ?>
 					</select>
 				</div>
-			</div> <br/>
-			
-			<div class="col-sm-6">
-				<button class="btn btn-default form-control" type="submit"> SEND </button>
+				</div>
 			</div>
-		</fieldset>
+			
+			<div class="row">&nbsp;</div>
+			
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-10 col-sm-offset-1">
+						<button class="btn btn-lg btn-success col-sm-10 col-sm-offset-1" type="submit"> SEND </button>
+					</div>
+				</div>
+			</div>
+			
 	</form>
 	<?php
 }
 
 
 else {
+// 	var_dump($_POST); die;
+	
 	$content = array(
 			'domain' => $_POST['domain'],
 			'rsa-key-size' => $_POST['rsa-key-size']

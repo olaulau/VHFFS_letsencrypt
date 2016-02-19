@@ -37,7 +37,7 @@
 
         <input type="text" id="password" name="password" class="form-control" placeholder="Password" required value="<?= isset($_POST['password']) ? $_POST['password'] : '' ?>">
         
-        <button class="btn btn-lg btn-primary btn-block" type="submit">generate</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit">generate</button>
       </form>
 	<?php
 	if(!empty($_POST['password'])) {

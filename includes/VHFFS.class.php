@@ -13,15 +13,44 @@ class VHFFS {
 	}
 	
 	
-	public function get_domains() {
+	public function get_alpha_domains() {
 		$sql = '
 		SELECT		servername
 		FROM		vhffs_httpd
-		ORDER BY	servername		
+		ORDER BY	servername
 		';
 		$st = $this->db->query($sql);
 		
 		$res = $st->fetchAll(PDO::FETCH_COLUMN, 'servername');
+		return $res;
+	}
+	
+	/*
+SELECT		DISTINCT vg.groupname, vh.servername
+FROM		vhffs_httpd vh, vhffs_object vo, vhffs_groups vg
+WHERE		vh.object_id = vo.object_id
+	AND		vo.owner_gid = vg.gid
+ORDER BY	vg.groupname, vh.servername
+	 */
+	public function get_project_domains() {
+		$sql = '
+		SELECT		DISTINCT vg.groupname, vh.servername
+		FROM		vhffs_httpd vh, vhffs_object vo, vhffs_groups vg
+		WHERE		vh.object_id = vo.object_id
+			AND		vo.owner_gid = vg.gid
+		ORDER BY	vg.groupname, vh.servername
+		';
+		$st = $this->db->query($sql);
+$table = $st->fetchAll(PDO::FETCH_ASSOC);
+// 		var_dump($res); die;
+		
+		$i = 0;
+		$res = array();
+		while ($i < count($table)) {
+			$res[$table[$i]['groupname']][] = $table[$i]['servername'];
+			$i ++;
+		}
+// 		var_dump($res); die;
 		return $res;
 	}
 	
