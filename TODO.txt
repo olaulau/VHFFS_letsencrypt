@@ -8,10 +8,11 @@
 	- index producteur, script consommateur																			OK
 - vhffs db																											
 	- connexion postgresql VHFFS																					OK
-	- liste user project domains																					x
+	- liste user project domains																					OK
 	- fonction hash mdp vhffs ? (login admindl direct)																xxx
 - interface visu																									
 	- saisie juste un domaine, fais le reste																		OK
+	- liste domain, project/domain																					OK
 	- recherche par user project domain avec auto complétion , filtrage live (penser gros volume)					x
 	- affichage stats HTTPS, demandes en cours																		xxx
 	- possibilité d'erreur, afficher logs, annulation, relance ultérieure											xxx

@@ -9,7 +9,7 @@ class VHFFS {
 	
 	public function __construct() {
 		global $conf;
-		$this->db = new PDO('pgsql:host=' . $conf['postgresql_host'] . ';port=' . $conf['postgresql_port'] . ';dbname=' . $conf['postgresql_schema'], $conf['postgresql_username'], $conf['postgresql_password']);
+		$this->db = new PDO('pgsql:host=' . $conf['postgresql_host'] . ';port=' . $conf['postgresql_port'] . ';dbname=' . $conf['postgresql_dbname'], $conf['postgresql_username'], $conf['postgresql_password']);
 	}
 	
 	
@@ -25,13 +25,7 @@ class VHFFS {
 		return $res;
 	}
 	
-	/*
-SELECT		DISTINCT vg.groupname, vh.servername
-FROM		vhffs_httpd vh, vhffs_object vo, vhffs_groups vg
-WHERE		vh.object_id = vo.object_id
-	AND		vo.owner_gid = vg.gid
-ORDER BY	vg.groupname, vh.servername
-	 */
+
 	public function get_project_domains() {
 		$sql = '
 		SELECT		DISTINCT vg.groupname, vh.servername
@@ -85,43 +79,60 @@ $table = $st->fetchAll(PDO::FETCH_ASSOC);
 		$res = $conf['webarea_root'] . '/' . substr($md5, 0, 2) . '/' . substr($md5, 2, 2) . '/' . substr($md5, 4, 2) . '/' . $servername . '/' . 'htdocs' . '/';
 		return $res;
 	}
+	
+	
+	public function create_table_if_needed() {
+		global $conf;
+		
+		$sql = "
+		SELECT EXISTS (
+			SELECT 1 
+			FROM   pg_catalog.pg_class c
+			JOIN   pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+			WHERE  n.nspname = " .  $this->db->quote($conf['postgresql_schema']) . "
+			AND    c.relname = " .  $this->db->quote($conf['postgresql_tablename']) . "
+			AND    c.relkind = 'r'
+		) AS exists";
+// 		echo "<pre> $sql </pre>"; die;
+		
+		$st = $this->db->query($sql);
+		if($this->db->errorCode() != 0) {
+			echo '<pre>' . $sql . '</pre>';
+			foreach($this->db->errorInfo() as $info) {
+				echo $info . '<br>';
+			}
+			die;
+		}
+		
+		$res = $st->fetch(PDO::FETCH_OBJ);
+		if(!$res->exists) { // table not present
+			$sql = "
+			CREATE TABLE " .  $conf['postgresql_tablename'] . " (
+				httpd_id integer NOT NULL,
+				certificate_date date DEFAULT NULL,
+				error_log text DEFAULT NULL
+			);
+			ALTER TABLE ONLY " .  $conf['postgresql_tablename'] . "
+				ADD CONSTRAINT vhffs_letsencrypt_pkey PRIMARY KEY (httpd_id);
+			ALTER TABLE ONLY " .  $conf['postgresql_tablename'] . "
+				ADD CONSTRAINT fk_vhffs_letsencrypt_vhffs_httpd FOREIGN KEY (httpd_id) REFERENCES vhffs_httpd(httpd_id);
+			";
+// 			echo "<pre> $sql </pre>"; die;
+			
+			$res = $this->db->exec($sql);
+			if($this->db->errorCode() != 0) {
+				echo '<pre>' . $sql . '</pre>';
+				foreach($this->db->errorInfo() as $info) {
+					echo $info . '<br>';
+				}
+				die;
+			}
+			if($res === FALSE) {
+				$_SESSION['messages'][] = 'error occured while creating letsencrypt table';
+			}
+			else {
+				$_SESSION['messages'][] = 'created letsencrypt table';
+			}
+		}
+	}
 }
-
-/*
-
-SELECT * FROM public.vhffs_httpd
-SELECT * FROM public.vhffs_groups;
-SELECT * FROM public.vhffs_object;
-SELECT * FROM public.vhffs_user_group;
-SELECT * FROM public.vhffs_users;
-
-
-SELECT	vu.username, vg.groupname
-FROM	vhffs_user_group vug, vhffs_users vu, vhffs_groups vg
-WHERE	vug.uid = vu.uid
-AND	vug.gid = vg.gid
-
-
-SELECT	vh.servername
-FROM	vhffs_httpd vh, vhffs_object vo
-WHERE	vh.object_id = vo.object_id
-
-
-SELECT		vu.username, vg.groupname, vh.servername
-FROM		vhffs_users vu, vhffs_groups vg, vhffs_httpd vh, vhffs_object vo
-WHERE		vo.owner_uid = vu.uid
-AND		vo.owner_gid = vg.gid
-AND		vh.object_id = vo.object_id
-ORDER BY	vu.username, vg.groupname, vh.servername
-
-
-SELECT		DISTINCT vu.username, vg.groupname, vh.servername, owner.mail
-FROM		vhffs_httpd vh, vhffs_object vo, vhffs_user_group vug, vhffs_users vu, vhffs_groups vg, VHFFS_users owner
-WHERE		vh.object_id = vo.object_id
-AND		vo.owner_gid = vug.gid
-AND		vug.uid = vu.uid
-AND		vug.gid = vg.gid
-AND		vo.owner_uid = owner.uid
-ORDER BY	vh.servername, vu.username, vg.groupname
-
-*/

@@ -7,6 +7,9 @@ require_once __DIR__.'/includes/admin.class.php';
 require_once __DIR__ . '/includes/VHFFS.class.php';
 
 Admin::restrict('./');
+
+$vhffs = new VHFFS();
+$vhffs->create_table_if_needed();
 ?>
 
 <!DOCTYPE html>
@@ -43,11 +46,12 @@ Admin::restrict('./');
 <body>
 
 	<div class="container" role="main">
+		<div style="position: absolute;">
 <?php
 if(!empty($_SESSION['messages'])) {
 	foreach ($_SESSION['messages'] as $message) {
 		?>
-		<div class="alert alert-success" role="alert" style="position: absolute;">
+		<div class="alert alert-success" role="alert">
 			<?=$message?>
 		</div>
 		<?php
@@ -55,7 +59,8 @@ if(!empty($_SESSION['messages'])) {
 	unset($_SESSION['messages']);
 }
 ?>
-</div>
+		</div>
+	</div>
 
 <a href="auth/signout.php"><button type="button" class="btn btn-lg btn-danger pull-right" style="position: absolute; right: 0px;">Log out</button></a>
 
@@ -142,7 +147,6 @@ else {
 	);
 	
 	// get missing data's from VHFFS database
-	$vhffs = new VHFFS();
 	$owner = $vhffs->get_owner_user_from_httpd_servername($content['domain']);
 	$content['email'] = $owner->mail;
 	$content['webroot-path'] = $vhffs->get_webrootpath_from_servername($content['domain']);

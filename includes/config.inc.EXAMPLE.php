@@ -25,7 +25,8 @@ define('AMQP_DEBUG', false);
 //  PostgreSQL (VHFFS)
 $conf['postgresql_host'] = 'localhost';
 $conf['postgresql_port'] = '5432';
-$conf['postgresql_schema'] = 'vhffs';
+$conf['postgresql_dbname'] = 'vhffs';
+$conf['postgresql_schema'] = 'public';
 $conf['postgresql_username'] = 'vhffs';
 $conf['postgresql_password'] = '';
 
