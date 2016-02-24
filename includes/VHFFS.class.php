@@ -6,7 +6,8 @@ class VHFFS {
 	
 	private $db;
 	
-	
+	//TODO : migrate to classes directory, with an autoloader
+	//TODO : use VHFFS_db class instead
 	public function __construct() {
 		global $conf;
 		$this->db = new PDO('pgsql:host=' . $conf['postgresql_host'] . ';port=' . $conf['postgresql_port'] . ';dbname=' . $conf['postgresql_dbname'], $conf['postgresql_username'], $conf['postgresql_password']);
@@ -17,8 +18,7 @@ class VHFFS {
 		$sql = '
 		SELECT		servername
 		FROM		vhffs_httpd
-		ORDER BY	servername
-		';
+		ORDER BY	servername';
 		$st = $this->db->query($sql);
 		
 		$res = $st->fetchAll(PDO::FETCH_COLUMN, 'servername');
@@ -32,10 +32,9 @@ class VHFFS {
 		FROM		vhffs_httpd vh, vhffs_object vo, vhffs_groups vg
 		WHERE		vh.object_id = vo.object_id
 			AND		vo.owner_gid = vg.gid
-		ORDER BY	vg.groupname, vh.servername
-		';
+		ORDER BY	vg.groupname, vh.servername';
 		$st = $this->db->query($sql);
-$table = $st->fetchAll(PDO::FETCH_ASSOC);
+		$table = $st->fetchAll(PDO::FETCH_ASSOC);
 // 		var_dump($res); die;
 		
 		$i = 0;
@@ -50,13 +49,13 @@ $table = $st->fetchAll(PDO::FETCH_ASSOC);
 	
 	
 	public function get_owner_user_from_httpd_servername($servername) {
+		$httpd = $this->get_httpd_from_servername($servername);
 		$sql = '
 		SELECT		vu.*
 		FROM		vhffs_httpd vh, vhffs_object vo, vhffs_users vu
-		WHERE		vh.object_id = vo.object_id
+		WHERE		vo.object_id = ' . $this->db->quote($httpd->object_id) . '
 			AND		vo.owner_uid = vu.uid
-			AND		vh.servername = ' . $this->db->quote($servername) . '
-		';
+			AND		vh.servername = ' . $this->db->quote($servername);
 		
 		$st = $this->db->query($sql);
 		if($this->db->errorCode() != 0) {
@@ -115,8 +114,7 @@ $table = $st->fetchAll(PDO::FETCH_ASSOC);
 			ALTER TABLE ONLY " .  $conf['postgresql_tablename'] . "
 				ADD CONSTRAINT vhffs_letsencrypt_pkey PRIMARY KEY (httpd_id);
 			ALTER TABLE ONLY " .  $conf['postgresql_tablename'] . "
-				ADD CONSTRAINT fk_vhffs_letsencrypt_vhffs_httpd FOREIGN KEY (httpd_id) REFERENCES vhffs_httpd(httpd_id);
-			";
+				ADD CONSTRAINT fk_vhffs_letsencrypt_vhffs_httpd FOREIGN KEY (httpd_id) REFERENCES vhffs_httpd(httpd_id);";
 // 			echo "<pre> $sql </pre>"; die;
 			
 			$res = $this->db->exec($sql);
@@ -135,4 +133,25 @@ $table = $st->fetchAll(PDO::FETCH_ASSOC);
 			}
 		}
 	}
+	
+	
+	public function get_httpd_from_servername($servername) {
+		$sql = '
+		SELECT		vh.*
+		FROM		vhffs_httpd vh
+		WHERE		vh.servername = ' . $this->db->quote($servername);
+	
+		$st = $this->db->query($sql);
+		if($this->db->errorCode() != 0) {
+			echo '<pre>' . $sql . '</pre>';
+			foreach($this->db->errorInfo() as $info) {
+				echo $info . '<br>';
+			}
+			die;
+		}
+	
+		$res = $st->fetch(PDO::FETCH_OBJ);
+		return $res;
+	}
+	
 }

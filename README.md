@@ -1,6 +1,17 @@
 # VHFFS_letsencrypt
 Let's Encrypt automating for VHFFS hosting with Nginx HTTPS front
 
+### Status :
+listed features works great, still lacks few features to be fully automatic
+
+### Features :
+- query WebArea infos from VHFFS database for easy input (just select a servername in the list)
+- send a LE request to get a certificate for selected domain
+- install it on Nginx
+
+### Coming next :
+- auto-renewal every 60 days
+
 ### Requirements :
 - [Let's Encrypt](https://letsencrypt.org/) (`git clone https://github.com/letsencrypt/letsencrypt`)
 - [VHFFS](http://vhffs.org/) with [WebArea](http://vhffs.org/doc:installationguide:web-service) service enabled
@@ -34,3 +45,4 @@ Let's Encrypt automating for VHFFS hosting with Nginx HTTPS front
 - to consume the queue, you have to start the `consumer_script.php` as root :
 	- `screen -S VHFFS_letsencrypt`
 	- `./consumer_script.php | tee -a consumer_script.log`
+	- don't forget to re-launch the consumer script after an update

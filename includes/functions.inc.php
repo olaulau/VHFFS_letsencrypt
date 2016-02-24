@@ -57,14 +57,18 @@ function get_commands($array) {
 }
 
 
+/**
+ * 
+ * @param unknown $content
+ * @return string error
+ */
 function treat_content($content) {
-// 	global $conf;
-	
 	verify_parameters($content);
 	
 	//  generate commands
 	$commands = get_commands($content);
 // 	echo "<pre>"; print_r($commands); echo "/<pre>"; return;
+	$error_buffer = '';
 	
 	//  let's encrypt command execution
 	echo '<h3>let\'s encrypt command :</h3> <pre>' . $commands['le_command'] . '</pre>' . "\n";
@@ -72,9 +76,11 @@ function treat_content($content) {
 	if($return_var !== 0) {
 		foreach ($output as $o) {
 			echo $o . "\n";
+			$error_buffer .= $o . "\n";
 		}
 		echo 'RETURN = ' .  $return_var . "\n";
-		die;
+		$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+		return $error_buffer;
 	}
 	
 	//  nginx config file writing
@@ -83,7 +89,8 @@ function treat_content($content) {
 	$return_var = file_put_contents($commands['ng_conf_file'], $commands['ng_conf']);
 	if($return_var === FALSE) {
 		echo 'RETURN = ' .  $return_var . "\n";
-		die;
+		$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+		return($error_buffer);
 	}
 	else {
 		echo 'config file written.' . "\n";
@@ -100,9 +107,11 @@ function treat_content($content) {
 		if($return_var !== 0) {
 			foreach ($output as $o) {
 				echo $o . "\n";
+				$error_buffer .= $o . "\n";;
 			}
 			echo 'RETURN = ' .  $return_var . "\n";
-			die;
+			$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+			return($error_buffer);
 		}
 	}
 	
@@ -112,15 +121,18 @@ function treat_content($content) {
 	if($return_var !== 0) {
 		foreach ($output as $o) {
 			echo $o . "\n";
+			$error_buffer .= $o . "\n";
 		}
 		echo 'RETURN = ' .  $return_var . "\n";
-		die;
+		$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+		return($error_buffer);
 	}
 	
 	echo "\n";
 	echo 'end of treatment.' . "\n";
 	echo '-----------------------------------------------------' . "\n";
 	echo "\n";
+	return(NULL);
 }
 
 

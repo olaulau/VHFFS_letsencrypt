@@ -4,6 +4,8 @@
 require_once __DIR__.'/includes/config.inc.php';
 require_once __DIR__.'/includes/functions.inc.php';
 require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/includes/VHFFS.class.php';
+require_once __DIR__ . '/classes/VHFFS_letsencrypt.class.php';
 
 use PhpAmqpLib\Connection\AMQPConnection;
 
@@ -11,7 +13,7 @@ use PhpAmqpLib\Connection\AMQPConnection;
 //  check we are root
 if (posix_getuid() !== 0) {
 	echo "It seems you don't have root rights. \n";
-	echo "You should try running if with 'sudo'. \n";
+	echo "You should try running it with 'sudo'. \n";
 	die;
 	
 } 
@@ -35,7 +37,20 @@ function process_message($msg)
 	$content = json_decode($msg->body, TRUE);
 	// echo "<pre>"; print_r($content); echo "/<pre>";
 	
-	treat_content($content);
+	$db = new VHFFS();
+	$vh = $db->get_httpd_from_servername($content['domain']);
+	$vl = VHFFS_letsencrypt::get_from_httpd_id($vh->httpd_id);
+	if(empty($vl)) {
+		$vl = new VHFFS_letsencrypt($vh->httpd_id);
+	}
+	
+	$error = treat_content($content);
+	if(isset($error)) {
+		$vl->cert_error($error);
+	}
+	else {
+		$vl->cert_ok();
+	}
 	
 	$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 }

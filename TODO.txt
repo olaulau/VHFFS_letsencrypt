@@ -19,6 +19,9 @@
 - renouvellement automatique																						
 	- mémoriser l'etat et la date des certificats																	x
 	- cron chaque jour, renouveler ceux à qui il reste moins d'un mois (utiliser la file de messages aussi)			x
+- défaire
+	- possibilité de désactiver / supprimer la config HTTPS															x
+	- possibilité de révoquer un certificat																			xxx
 - technique																											
-	- enlever dépendances et les faire installer avec composer														
-	- utilité de log4php dans le code actuel ? garder pour après ?													
+	- enlever dépendances et les faire installer avec composer														xxx
+	- utilité de log4php dans le code actuel ? garder pour après ?													xxx
