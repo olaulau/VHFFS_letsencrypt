@@ -1,5 +1,8 @@
 <?php
 
+// require_once __DIR__ . '/../includes/autoload.inc.php';
+
+
 abstract class VHFFS_db {
 	
 	private static $db = NULL;
@@ -12,6 +15,8 @@ abstract class VHFFS_db {
 		}
 		return self::$db;
 	}
+	
+	//TODO close method ?
 	
 	
 	/**

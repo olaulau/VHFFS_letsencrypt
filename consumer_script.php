@@ -1,11 +1,9 @@
 #! /usr/bin/php
 <?php
 
-require_once __DIR__.'/includes/config.inc.php';
-require_once __DIR__.'/includes/functions.inc.php';
+require_once __DIR__ . '/includes/autoload.inc.php';
 require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/includes/VHFFS.class.php';
-require_once __DIR__ . '/classes/VHFFS_letsencrypt.class.php';
+
 
 use PhpAmqpLib\Connection\AMQPConnection;
 
@@ -37,7 +35,7 @@ function process_message($msg)
 	$content = json_decode($msg->body, TRUE);
 	// echo "<pre>"; print_r($content); echo "/<pre>";
 	
-	$db = new VHFFS();
+	$db = new VHFFS(); //TODO : move outside to prevent memory leak (though it should be closed when no var use it)
 	$vh = $db->get_httpd_from_servername($content['domain']);
 	$vl = VHFFS_letsencrypt::get_from_httpd_id($vh->httpd_id);
 	if(empty($vl)) {

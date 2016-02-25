@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../classes/VHFFS_db.class.php';
+require_once __DIR__ . '/../includes/autoload.inc.php';
 
 
 class VHFFS_letsencrypt {

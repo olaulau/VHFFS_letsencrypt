@@ -1,12 +1,13 @@
 <?php
 
-require_once __DIR__ . '/config.inc.php';
+require_once __DIR__ . '/../includes/autoload.inc.php';
+
 
 class VHFFS {
 	
 	private $db;
 	
-	//TODO : migrate to classes directory, with an autoloader
+
 	//TODO : use VHFFS_db class instead
 	public function __construct() {
 		global $conf;

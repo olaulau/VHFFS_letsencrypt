@@ -1,7 +1,8 @@
 <?php
 
-require_once 'config.inc.php';
+require_once __DIR__ . '/../includes/autoload.inc.php';
 require_once __DIR__ . '/../vendor/autoload.php';
+
 
 use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;

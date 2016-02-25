@@ -1,5 +1,8 @@
 <?php
 
+// require_once __DIR__ . '/../includes/autoload.inc.php';
+
+
 class Admin {
 	
 	public static function is_admin() {
