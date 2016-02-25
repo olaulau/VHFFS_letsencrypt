@@ -6,3 +6,4 @@ rsync.sh
 includes/config.inc.php
 /content.json
 consumer_script.log
+/test.php

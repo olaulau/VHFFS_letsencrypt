@@ -16,7 +16,10 @@ abstract class VHFFS_db {
 		return self::$db;
 	}
 	
-	//TODO close method ?
+	
+	public static function close() {
+		self::$db = NULL;
+	}
 	
 	
 	/**

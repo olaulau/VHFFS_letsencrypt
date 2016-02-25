@@ -35,7 +35,7 @@ function process_message($msg)
 	$content = json_decode($msg->body, TRUE);
 	// echo "<pre>"; print_r($content); echo "/<pre>";
 	
-	$db = new VHFFS(); //TODO : move outside to prevent memory leak (though it should be closed when no var use it)
+	$db = new VHFFS();
 	$vh = $db->get_httpd_from_servername($content['domain']);
 	$vl = VHFFS_letsencrypt::get_from_httpd_id($vh->httpd_id);
 	if(empty($vl)) {

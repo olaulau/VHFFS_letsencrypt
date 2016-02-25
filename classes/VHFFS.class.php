@@ -5,22 +5,12 @@ require_once __DIR__ . '/../includes/autoload.inc.php';
 
 class VHFFS {
 	
-	private $db;
-	
-
-	//TODO : use VHFFS_db class instead
-	public function __construct() {
-		global $conf;
-		$this->db = new PDO('pgsql:host=' . $conf['postgresql_host'] . ';port=' . $conf['postgresql_port'] . ';dbname=' . $conf['postgresql_dbname'], $conf['postgresql_username'], $conf['postgresql_password']);
-	}
-	
-	
 	public function get_alpha_domains() {
 		$sql = '
 		SELECT		servername
 		FROM		vhffs_httpd
 		ORDER BY	servername';
-		$st = $this->db->query($sql);
+		$st = VHFFS_db::get()->query($sql);
 		
 		$res = $st->fetchAll(PDO::FETCH_COLUMN, 'servername');
 		return $res;
@@ -34,7 +24,7 @@ class VHFFS {
 		WHERE		vh.object_id = vo.object_id
 			AND		vo.owner_gid = vg.gid
 		ORDER BY	vg.groupname, vh.servername';
-		$st = $this->db->query($sql);
+		$st = VHFFS_db::get()->query($sql);
 		$table = $st->fetchAll(PDO::FETCH_ASSOC);
 // 		var_dump($res); die;
 		
@@ -54,14 +44,14 @@ class VHFFS {
 		$sql = '
 		SELECT		vu.*
 		FROM		vhffs_httpd vh, vhffs_object vo, vhffs_users vu
-		WHERE		vo.object_id = ' . $this->db->quote($httpd->object_id) . '
+		WHERE		vo.object_id = ' . VHFFS_db::get()->quote($httpd->object_id) . '
 			AND		vo.owner_uid = vu.uid
-			AND		vh.servername = ' . $this->db->quote($servername);
+			AND		vh.servername = ' . VHFFS_db::get()->quote($servername);
 		
-		$st = $this->db->query($sql);
-		if($this->db->errorCode() != 0) {
+		$st = VHFFS_db::get()->query($sql);
+		if(VHFFS_db::get()->errorCode() != 0) {
 			echo '<pre>' . $sql . '</pre>';
-			foreach($this->db->errorInfo() as $info) {
+			foreach(VHFFS_db::get()->errorInfo() as $info) {
 				echo $info . '<br>';
 			}
 			die;
@@ -89,16 +79,16 @@ class VHFFS {
 			SELECT 1 
 			FROM   pg_catalog.pg_class c
 			JOIN   pg_catalog.pg_namespace n ON n.oid = c.relnamespace
-			WHERE  n.nspname = " .  $this->db->quote($conf['postgresql_schema']) . "
-			AND    c.relname = " .  $this->db->quote($conf['postgresql_tablename']) . "
+			WHERE  n.nspname = " .  VHFFS_db::get()->quote($conf['postgresql_schema']) . "
+			AND    c.relname = " .  VHFFS_db::get()->quote($conf['postgresql_tablename']) . "
 			AND    c.relkind = 'r'
 		) AS exists";
 // 		echo "<pre> $sql </pre>"; die;
 		
-		$st = $this->db->query($sql);
-		if($this->db->errorCode() != 0) {
+		$st = VHFFS_db::get()->query($sql);
+		if(VHFFS_db::get()->errorCode() != 0) {
 			echo '<pre>' . $sql . '</pre>';
-			foreach($this->db->errorInfo() as $info) {
+			foreach(VHFFS_db::get()->errorInfo() as $info) {
 				echo $info . '<br>';
 			}
 			die;
@@ -118,10 +108,10 @@ class VHFFS {
 				ADD CONSTRAINT fk_vhffs_letsencrypt_vhffs_httpd FOREIGN KEY (httpd_id) REFERENCES vhffs_httpd(httpd_id);";
 // 			echo "<pre> $sql </pre>"; die;
 			
-			$res = $this->db->exec($sql);
-			if($this->db->errorCode() != 0) {
+			$res = VHFFS_db::get()->exec($sql);
+			if(VHFFS_db::get()->errorCode() != 0) {
 				echo '<pre>' . $sql . '</pre>';
-				foreach($this->db->errorInfo() as $info) {
+				foreach(VHFFS_db::get()->errorInfo() as $info) {
 					echo $info . '<br>';
 				}
 				die;
@@ -140,12 +130,12 @@ class VHFFS {
 		$sql = '
 		SELECT		vh.*
 		FROM		vhffs_httpd vh
-		WHERE		vh.servername = ' . $this->db->quote($servername);
+		WHERE		vh.servername = ' . VHFFS_db::get()->quote($servername);
 	
-		$st = $this->db->query($sql);
-		if($this->db->errorCode() != 0) {
+		$st = VHFFS_db::get()->query($sql);
+		if(VHFFS_db::get()->errorCode() != 0) {
 			echo '<pre>' . $sql . '</pre>';
-			foreach($this->db->errorInfo() as $info) {
+			foreach(VHFFS_db::get()->errorInfo() as $info) {
 				echo $info . '<br>';
 			}
 			die;
