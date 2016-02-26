@@ -14,10 +14,11 @@
 	- saisie juste un domaine, fais le reste																		OK
 	- liste domain, project/domain																					OK
 	- recherche par user project domain avec auto complétion , filtrage live (penser gros volume)					x
+	- gestion autres domaines non VHFFS (panel, phpmyadmin ...) avec webroot et email manuels						x			
 	- affichage stats HTTPS, demandes en cours																		xxx
 	- possibilité d'erreur, afficher logs, annulation, relance ultérieure											xxx
 - renouvellement automatique																						
-	- mémoriser l'etat et la date des certificats																	x
+	- mémoriser l'etat et la date des certificats																	OK
 	- cron chaque jour, renouveler ceux à qui il reste moins d'un mois (utiliser la file de messages aussi)			x
 - défaire
 	- possibilité de désactiver / supprimer la config HTTPS															x

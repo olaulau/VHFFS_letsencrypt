@@ -153,3 +153,19 @@ function put_content_into_queue($content) {
 	$ch->close();
 	$conn->close();
 }
+
+function create_renew_cert($servername) {
+	global $conf;
+	// get missing data's from VHFFS database
+	$owner = VHFFS::get_owner_user_from_httpd_servername($servername);
+	$content = array(
+			'domain' => $servername,
+			'rsa-key-size' => $conf['rsa-key-size'],
+			'email' => $owner->mail,
+			'webroot-path' => VHFFS::get_webrootpath_from_servername($servername)
+	);
+	verify_parameters($content);
+	
+	//  put content into queue
+	put_content_into_queue($content);
+}

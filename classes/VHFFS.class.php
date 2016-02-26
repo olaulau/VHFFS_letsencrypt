@@ -5,7 +5,7 @@ require_once __DIR__ . '/../includes/autoload.inc.php';
 
 class VHFFS {
 	
-	public function get_alpha_domains() {
+	public static function get_alpha_domains() {
 		$sql = '
 		SELECT		servername
 		FROM		vhffs_httpd
@@ -17,7 +17,10 @@ class VHFFS {
 	}
 	
 
-	public function get_project_domains() {
+	public static function get_project_domains() {
+		//TODO : tester avec ca :
+		// http://fr2.php.net/manual/en/pdostatement.fetchall.php
+		// To return an associative array grouped by the values of a specified column, bitwise-OR PDO::FETCH_COLUMN with PDO::FETCH_GROUP. 
 		$sql = '
 		SELECT		DISTINCT vg.groupname, vh.servername
 		FROM		vhffs_httpd vh, vhffs_object vo, vhffs_groups vg
@@ -39,7 +42,7 @@ class VHFFS {
 	}
 	
 	
-	public function get_owner_user_from_httpd_servername($servername) {
+	public static function get_owner_user_from_httpd_servername($servername) {
 		$httpd = $this->get_httpd_from_servername($servername);
 		$sql = '
 		SELECT		vu.*
@@ -62,7 +65,7 @@ class VHFFS {
 	}
 	
 	
-	public function get_webrootpath_from_servername($servername) {
+	public static function get_webrootpath_from_servername($servername) {
 		global $conf;
 		$md5 = md5($servername);
 		
@@ -71,7 +74,7 @@ class VHFFS {
 	}
 	
 	
-	public function create_table_if_needed() {
+	public static function create_table_if_needed() {
 		global $conf;
 		
 		$sql = "
@@ -126,7 +129,7 @@ class VHFFS {
 	}
 	
 	
-	public function get_httpd_from_servername($servername) {
+	public static function get_httpd_from_servername($servername) {
 		$sql = '
 		SELECT		vh.*
 		FROM		vhffs_httpd vh

@@ -16,6 +16,8 @@ listed features works great, still lacks few features to be fully automatic
 - [Let's Encrypt](https://letsencrypt.org/) (`git clone https://github.com/letsencrypt/letsencrypt`)
 - [VHFFS](http://vhffs.org/) with [WebArea](http://vhffs.org/doc:installationguide:web-service) service enabled
 	- [Apache2](https://httpd.apache.org/) listening on HTTP port 80
+		- [rpaf](https://help.ubuntu.com/community/Nginx/ReverseProxy#Apache_to_use_proxy) module so that proxyfing is more transparent
+		- [rewrite](https://httpd.apache.org/docs/current/fr/mod/mod_rewrite.html) module so that you can redirect users to HTTPS site
 	- [PostGreSQL](http://www.postgresql.org/) with full access to the VHFFS database
 - [PHP](https://secure.php.net/) >= 5.5
 - [Nginx](http://nginx.org/) with only a default config for HTTPS port 443

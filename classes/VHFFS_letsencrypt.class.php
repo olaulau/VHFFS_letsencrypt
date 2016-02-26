@@ -114,12 +114,11 @@ class VHFFS_letsencrypt {
 	
 	
 	public function delete() {
-		
+		//TODO
 	}
 	
 	
 	public function cert_ok() {
-		$certificate_date = (new DateTime('now'))->format('Y-m-d');
 		$this->certificate_date = (new DateTime('now'))->format('Y-m-d');
 		$this->error_log = NULL;
 		$this->save();
@@ -129,6 +128,24 @@ class VHFFS_letsencrypt {
 	public function cert_error($error_log) {
 		$this->error_log = $error_log;
 		$this->save();
+	}
+	
+	
+	public static function get_servernames_to_renew() {
+		$now = new DateTime();
+		$di = new DateInterval('P60D');
+		$limit = $now->sub($di)->format('Y-m-d');
+		
+		$sql = "
+		SELECT	vh.servername
+		FROM	vhffs_letsencrypt vl, vhffs_httpd vh
+		WHERE	vl.httpd_id = vh.httpd_id
+			AND	vl.certificate_date <= '" . $limit . "'";
+		
+		$st = VHFFS_db::get()->query($sql);
+		$res = $st->fetchAll(PDO::FETCH_COLUMN, 'servername');
+// 		var_dump($res); die;
+		return $res;
 	}
 	
 }

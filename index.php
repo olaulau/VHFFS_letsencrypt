@@ -6,8 +6,7 @@ require_once __DIR__ . '/includes/autoload.inc.php';
 
 Admin::restrict('./');
 
-$vhffs = new VHFFS();
-$vhffs->create_table_if_needed();
+VHFFS::create_table_if_needed();
 ?>
 
 <!DOCTYPE html>
@@ -139,20 +138,7 @@ foreach ($conf['rsa-key-sizes'] as $key_size) {
 else {
 // 	var_dump($_POST); die;
 	
-	$content = array(
-			'domain' => $_POST['domain'],
-			'rsa-key-size' => $_POST['rsa-key-size']
-	);
-	
-	// get missing data's from VHFFS database
-	$owner = $vhffs->get_owner_user_from_httpd_servername($content['domain']);
-	$content['email'] = $owner->mail;
-	$content['webroot-path'] = $vhffs->get_webrootpath_from_servername($content['domain']);
-
-	verify_parameters($content);
-	
-	//  put content into queue
-	put_content_into_queue($content);
+	create_renew_cert($_POST['domain']);
 	echo 'content added to queue. it will be treated as soon as possible. <br/>';
 }
 ?>
