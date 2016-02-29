@@ -15,6 +15,7 @@
 	- liste domain, project/domain																					OK
 	- recherche par user project domain avec auto complétion , filtrage live (penser gros volume)					x
 	- gestion autres domaines non VHFFS (panel, phpmyadmin ...) avec webroot et email manuels						x			
+	- ne pas afficher les domaines ayant déjà leur certificat														x
 	- affichage stats HTTPS, demandes en cours																		xxx
 	- possibilité d'erreur, afficher logs, annulation, relance ultérieure											xxx
 - renouvellement automatique																						

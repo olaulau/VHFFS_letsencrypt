@@ -132,8 +132,9 @@ class VHFFS_letsencrypt {
 	
 	
 	public static function get_servernames_to_renew() {
+		global $conf;
 		$now = new DateTime();
-		$di = new DateInterval('P60D');
+		$di = new DateInterval('P' . $conf['le_recommended_renewal'] . 'D');
 		$limit = $now->sub($di)->format('Y-m-d');
 		
 		$sql = "

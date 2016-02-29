@@ -2,9 +2,11 @@
 
 // copy to config.inc.php and fill-in values
 
+//let's encrypt
 $conf['letsencrypt_path'] = '/root/letsencrypt';
-
 $conf['rsa-key-size'] = 4096;
+$conf['le_expiration_delay'] = 90;
+$conf['le_recommended_renewal'] = 60;
 
 // admin users, open auth/passwd.php to create a password hash
 $conf['admins'] = array(
