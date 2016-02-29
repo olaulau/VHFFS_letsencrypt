@@ -19,7 +19,7 @@
 	- possibilité d'erreur, afficher logs, annulation, relance ultérieure											xxx
 - renouvellement automatique																						
 	- mémoriser l'etat et la date des certificats																	OK
-	- cron chaque jour, renouveler ceux à qui il reste moins d'un mois (utiliser la file de messages aussi)			x
+	- cron chaque jour, renouveler ceux à qui il reste moins d'un mois (utiliser la file de messages aussi)			OK
 - défaire
 	- possibilité de désactiver / supprimer la config HTTPS															x
 	- possibilité de révoquer un certificat																			xxx

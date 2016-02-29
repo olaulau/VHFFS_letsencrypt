@@ -1,7 +1,7 @@
 $( document ).ready(function(){
 	
 	//  disapearance of alerts
-	$(".alert").delay(3000).fadeOut(2000, function(){
+	$("#messages .alert").delay(3000).fadeOut(2000, function(){
 		$(this).remove();
 	});
 	
@@ -50,8 +50,8 @@ $( document ).ready(function(){
 	
 	//  handle form submit (send only particular values)
 	$("form[name=easyform]").submit(function() {
-		$("#alpha-domain").attr("disabled", "disabled");
-		$("#project-domain").attr("disabled", "disabled");
+//		$("#alpha-domain").attr("disabled", "disabled");
+//		$("#project-domain").attr("disabled", "disabled");
 		return true;
 	});
 	

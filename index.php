@@ -42,7 +42,7 @@ VHFFS::create_table_if_needed();
 </head>
 <body>
 
-	<div class="container" role="main">
+	<div id="messages"class="container" role="main">
 		<div style="position: absolute;">
 <?php
 if(!empty($_SESSION['messages'])) {
@@ -61,16 +61,16 @@ if(!empty($_SESSION['messages'])) {
 
 <a href="auth/signout.php"><button type="button" class="btn btn-lg btn-danger pull-right" style="position: absolute; right: 0px;">Log out</button></a>
 
+<div style="text-align: center;">
+	<h1 class="form-signin-heading">VHFFS - Let's Encrypt</h1>
+	<h3 class="form-signin-heading">(automatic certificate request and install for VHFFS hosting)</h3>
+</div>
+
 <?php
 //  print_r($_POST);
 if(empty($_POST)) {
 	?>
-	<div style="text-align: center;">
-		<h1 class="form-signin-heading">VHFFS - Let's Encrypt</h1>
-		<h3 class="form-signin-heading">(automatic certificate request and install for VHFFS hosting)</h3>
-	</div>
-	
-	<h4 class="form-signin-heading col-sm-offset-1">Please fill-in the form</h4>
+	<h4 class="form-signin-heading col-sm-offset-1">Please choose a domain from any of the lists :</h4>
 	
 	<form action="" method="POST" name="easyform" class="">
 			
@@ -115,9 +115,20 @@ if(empty($_POST)) {
 
 else {
 // 	var_dump($_POST); die;
+	if(!empty($_POST['domain'])) {
+		create_renew_cert($_POST['domain']);
+		echo 'content added to queue. it will be treated as soon as possible. <br/>';
+	}
+	else {
+		?>
+		<div class="alert alert-warning" role="alert">
+			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+			<span class="sr-only">Error:</span>
+			Please select a domain from any of the lists.
+		</div>
+		<?php
+	}
 	
-	create_renew_cert($_POST['domain']);
-	echo 'content added to queue. it will be treated as soon as possible. <br/>';
 }
 ?>
 
