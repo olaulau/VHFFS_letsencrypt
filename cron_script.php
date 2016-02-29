@@ -8,9 +8,10 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 
 // query DB, loop domains to renew
-$certs_to_renew = VHFFS_letsencrypt::get_servernames_to_renew();
+$servernames = VHFFS_letsencrypt::get_servernames_to_renew();
 
 foreach ($servernames as $servername) {
 	create_renew_cert($servername);
 }
+
 //TODO if vhffs_httpd cannot be found, revoke certificate and remove config from nginx

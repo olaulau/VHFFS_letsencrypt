@@ -43,7 +43,7 @@ class VHFFS {
 	
 	
 	public static function get_owner_user_from_httpd_servername($servername) {
-		$httpd = $this->get_httpd_from_servername($servername);
+		$httpd = self::get_httpd_from_servername($servername);
 		$sql = '
 		SELECT		vu.*
 		FROM		vhffs_httpd vh, vhffs_object vo, vhffs_users vu

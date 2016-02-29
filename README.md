@@ -2,21 +2,22 @@
 Let's Encrypt automating for VHFFS hosting with Nginx HTTPS front
 
 ### Status :
-listed features works great, still lacks few features to be fully automatic
+- listed features works great
 
 ### Features :
 - query WebArea infos from VHFFS database for easy input (just select a servername in the list)
 - send a LE request to get a certificate for selected domain
 - install it on Nginx
+- auto-renewal of certificate every 60 days
 
 ### Coming next :
-- auto-renewal every 60 days
+-
 
 ### Requirements :
 - [Let's Encrypt](https://letsencrypt.org/) (`git clone https://github.com/letsencrypt/letsencrypt`)
 - [VHFFS](http://vhffs.org/) with [WebArea](http://vhffs.org/doc:installationguide:web-service) service enabled
 	- [Apache2](https://httpd.apache.org/) listening on HTTP port 80
-		- [rpaf](https://help.ubuntu.com/community/Nginx/ReverseProxy#Apache_to_use_proxy) module so that proxyfing is more transparent
+		- [rpaf](https://help.ubuntu.com/community/Nginx/ReverseProxy#Apache_to_use_proxy) module so that proxyfing is more transparent for applications
 		- [rewrite](https://httpd.apache.org/docs/current/fr/mod/mod_rewrite.html) module so that you can redirect users to HTTPS site
 	- [PostGreSQL](http://www.postgresql.org/) with full access to the VHFFS database
 - [PHP](https://secure.php.net/) >= 5.5
@@ -44,7 +45,10 @@ listed features works great, still lacks few features to be fully automatic
 - execute the create SQL queries in `notes.sql` on your VHFFS database
 
 ### Running :
-- to consume the queue, you have to start the `consumer_script.php` as root :
+- to consume the queue, you have to start the `consumer_script.php` as **root** :
 	- `screen -S VHFFS_letsencrypt`
 	- `./consumer_script.php | tee -a consumer_script.log`
 	- don't forget to re-launch the consumer script after an update
+- to renew certificates automatically, you have to add a daily cron, as your **web user**
+	- `crontab -e`  
+		`57	5	*	*	*	php <www_dir>/VHFFS_letsencrypt/cron_script.php`
