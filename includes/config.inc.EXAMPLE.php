@@ -29,4 +29,6 @@ $conf['postgresql_schema'] = 'public';
 $conf['postgresql_username'] = 'vhffs';
 $conf['postgresql_password'] = '';
 
+$conf['postgresql_tablename'] = 'vhffs_letsencrypt';
+
 $conf['webarea_root'] = '/data/web';
