@@ -4,8 +4,6 @@
 
 $conf['letsencrypt_path'] = '/root/letsencrypt';
 
-$conf['rsa-key-sizes'] = array(2048, 4096);
-$conf['default_rsa-key-sizes'] = 4096;
 $conf['rsa-key-size'] = 4096;
 
 // admin users, open auth/passwd.php to create a password hash

@@ -98,34 +98,12 @@ if(empty($_POST)) {
 			
 			<div class="row">&nbsp;</div>
 			
-			<div class="form-group">
-				<div class="row"> <div class="col-sm-2 col-md-offset-5 text-center form-group-lg"> <h4><label for="rsa-key-size" class="control-label">rsa-key-size</label></h4> </div> </div>
-				<div class="row">
-				<div class="col-sm-2 col-md-offset-5 input-group-lg">
-					<select class="form-control" name="rsa-key-size">
-<?php
-foreach ($conf['rsa-key-sizes'] as $key_size) {
-	if($key_size === $conf['default_rsa-key-sizes']) {
-		echo
-'						<option value="' . $key_size . '" selected="selected">' . $key_size . '</option>';
-	}
-	else {
-		echo
-'						<option value="' . $key_size . '">' . $key_size . '</option>';
-		}
-	}
-?>
-					</select>
-				</div>
-				</div>
-			</div>
-			
 			<div class="row">&nbsp;</div>
 			
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-sm-10 col-sm-offset-1">
-						<button class="btn btn-lg btn-success col-sm-10 col-sm-offset-1" type="submit"> SEND </button>
+						<button class="btn btn-lg btn-success col-sm-8 col-sm-offset-2" type="submit"> <br/> SEND <br/> &nbsp; </button>
 					</div>
 				</div>
 			</div>
