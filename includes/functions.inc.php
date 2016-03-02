@@ -34,7 +34,7 @@ function get_commands($array) {
    server_name ' . $array['domain'] . ';
    ssl on;
    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-   ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/cert.pem;
+   ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/fullchain.pem;
    ssl_certificate_key /etc/letsencrypt/live/' . $array['domain'] . '/privkey.pem;
 	
    location / {
