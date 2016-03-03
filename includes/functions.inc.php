@@ -26,7 +26,7 @@ function get_commands($array) {
 --email "' . $array['email'] . '" \
 --domain "' . $array['domain'] . '" \
 --rsa-key-size ' . $array['rsa-key-size'] . ' \
---webroot --webroot-path "' . $array['webroot-path'] . '"';
+--webroot --webroot-path "' . $array['webroot-path'] . '" 2>&1';
 	
 	$content['ng_conf'] =
 'server {
@@ -64,6 +64,12 @@ function get_commands($array) {
  * @return string error
  */
 function treat_content($content) {
+	echo PHP_EOL;
+	echo '-----------------------------------------------------' . PHP_EOL;
+	echo "DATE = " . date(DateTime::COOKIE) . PHP_EOL;
+	echo 'begining of treatment.' . PHP_EOL;
+	echo PHP_EOL;
+	
 	verify_parameters($content);
 	
 	//  generate commands
@@ -72,67 +78,72 @@ function treat_content($content) {
 	$error_buffer = '';
 	
 	//  let's encrypt command execution
-	echo '<h3>let\'s encrypt command :</h3> <pre>' . $commands['le_command'] . '</pre>' . "\n";
+	echo 'let\'s encrypt command : ' . PHP_EOL;
+	echo $commands['le_command'] . PHP_EOL;
 	exec($commands['le_command'], $output, $return_var);
 	if($return_var !== 0) {
 		foreach ($output as $o) {
-			echo $o . "\n";
-			$error_buffer .= $o . "\n";
+			echo $o . PHP_EOL;
+			$error_buffer .= $o . PHP_EOL;
 		}
-		echo 'RETURN = ' .  $return_var . "\n";
-		$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+		echo 'RETURN = ' .  $return_var . PHP_EOL;
+		$error_buffer .= 'RETURN = ' .  $return_var . PHP_EOL;
 		return $error_buffer;
 	}
 	
 	//  nginx config file writing
-	echo '<h3>nginx config :</h3> <pre>' . $commands['ng_conf'] . '</pre>' . "\n";
-	echo '<h3>nginx config file :</h3> <pre>' . $commands['ng_conf_file'] . '</pre>' . "\n";
+	echo 'nginx config : ' . PHP_EOL;
+	echo $commands['ng_conf'] . PHP_EOL;
+	echo 'nginx config file : ' . PHP_EOL;
+	echo $commands['ng_conf_file'] . PHP_EOL;
 	$return_var = file_put_contents($commands['ng_conf_file'], $commands['ng_conf']);
 	if($return_var === FALSE) {
-		echo 'RETURN = ' .  $return_var . "\n";
-		$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+		echo 'RETURN = ' .  $return_var . PHP_EOL;
+		$error_buffer .= 'RETURN = ' .  $return_var . PHP_EOL;
 		return($error_buffer);
 	}
 	else {
-		echo 'config file written.' . "\n";
+		echo 'config file written.' . PHP_EOL;
 	}
 	
 	//  nginx config enabling
-	echo '<h3>nginx config enable :</h3> <pre>';
+	echo 'nginx config enable : ' . PHP_EOL;
 	foreach ($commands['ng_conf_enable'] as $command) {
-		echo $command . "\n";
+		echo $command . PHP_EOL;
 	}
-	echo '</pre>' . "\n";
+	echo PHP_EOL;
 	foreach ($commands['ng_conf_enable'] as $command) {
 		exec($command, $output, $return_var);
 		if($return_var !== 0) {
 			foreach ($output as $o) {
-				echo $o . "\n";
-				$error_buffer .= $o . "\n";;
+				echo $o . PHP_EOL;
+				$error_buffer .= $o . PHP_EOL;;
 			}
-			echo 'RETURN = ' .  $return_var . "\n";
-			$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+			echo 'RETURN = ' .  $return_var . PHP_EOL;
+			$error_buffer .= 'RETURN = ' .  $return_var . PHP_EOL;
 			return($error_buffer);
 		}
 	}
 	
 	//  nginx config reload
-	echo '<h3>nginx config reload :</h3> <pre>' . $commands['ng_conf_activation'] . '</pre>' . "\n";
+	echo 'nginx config reload : ' . PHP_EOL;
+	echo $commands['ng_conf_activation'] . PHP_EOL;
 	exec($commands['ng_conf_activation'], $output, $return_var);
 	if($return_var !== 0) {
 		foreach ($output as $o) {
-			echo $o . "\n";
-			$error_buffer .= $o . "\n";
+			echo $o . PHP_EOL;
+			$error_buffer .= $o . PHP_EOL;
 		}
-		echo 'RETURN = ' .  $return_var . "\n";
-		$error_buffer .= 'RETURN = ' .  $return_var . "\n";
+		echo 'RETURN = ' .  $return_var . PHP_EOL;
+		$error_buffer .= 'RETURN = ' .  $return_var . PHP_EOL;
 		return($error_buffer);
 	}
 	
-	echo "\n";
-	echo 'end of treatment.' . "\n";
-	echo '-----------------------------------------------------' . "\n";
-	echo "\n";
+	echo PHP_EOL;
+	echo 'end of treatment.' . PHP_EOL;
+	echo "DATE = " . date(DateTime::COOKIE) . PHP_EOL;
+	echo '-----------------------------------------------------' . PHP_EOL;
+	echo PHP_EOL;
 	return(NULL);
 }
 
