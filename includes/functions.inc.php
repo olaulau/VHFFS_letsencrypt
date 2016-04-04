@@ -32,7 +32,7 @@ function get_commands($array) {
 	$content['ng_conf'] =
 'server {
    listen 443;
-   server_name ' . $array['domain'] . ' www.' . $array['domain'] . ';
+   server_name ' . $array['domain'] . ';
    ssl on;
    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
    ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/fullchain.pem;
@@ -44,7 +44,24 @@ function get_commands($array) {
 	proxy_set_header        X-Forwarded-Proto $scheme;
    	add_header              Front-End-Https   on;
    }
-}';
+}
+			
+server {
+   listen 443;
+   server_name www.' . $array['domain'] . ';
+   ssl on;
+   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+   ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/fullchain.pem;
+   ssl_certificate_key /etc/letsencrypt/live/' . $array['domain'] . '/privkey.pem;
+	
+   location / {
+	proxy_pass http://www.' . $array['domain'] . ';
+	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+	proxy_set_header        X-Forwarded-Proto $scheme;
+   	add_header              Front-End-Https   on;
+   }
+}
+';
 	
 	$content['ng_conf_file'] = '/etc/nginx/sites-available/' . $array['domain'] . '';
 	
