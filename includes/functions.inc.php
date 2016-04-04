@@ -25,13 +25,14 @@ function get_commands($array) {
 	$conf['letsencrypt_path'] . '/letsencrypt-auto certonly -v --text --agree-tos --renew-by-default \
 --email "' . $array['email'] . '" \
 --domain "' . $array['domain'] . '" \
+--domain "www.' . $array['domain'] . '" \
 --rsa-key-size ' . $array['rsa-key-size'] . ' \
 --webroot --webroot-path "' . $array['webroot-path'] . '" 2>&1';
 	
 	$content['ng_conf'] =
 'server {
    listen 443;
-   server_name ' . $array['domain'] . ';
+   server_name ' . $array['domain'] . ' www.' . $array['domain'] . ';
    ssl on;
    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
    ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/fullchain.pem;
