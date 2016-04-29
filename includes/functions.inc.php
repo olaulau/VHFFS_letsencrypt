@@ -17,16 +17,34 @@ function verify_parameters($array) {
 }
 
 
+function check_sibling_DNS($domain) {
+	$res1 = gethostbyname($domain);
+	$res2 = gethostbyname('www.' . $domain);
+	if($res1 === $res2)
+		return true;
+	else
+		return false;
+}
+
+
 function get_commands($array) {
 	global $conf;
 	$content = array();
+	
+	//  checks if the domain with WWW also resolves to the same host
+	$add_www_domain = check_sibling_DNS($array['domain']);
 	
 	$content['le_command'] =
 	$conf['letsencrypt_path'] . '/letsencrypt-auto certonly -v --text --agree-tos --renew-by-default \
 --email "' . $array['email'] . '" \
 --domain "' . $array['domain'] . '" \
+';
+	if($add_www_domain)
+		$content['le_command'] .= '
 --domain "www.' . $array['domain'] . '" \
---rsa-key-size ' . $array['rsa-key-size'] . ' \
+';
+	$content['le_command'] .=
+'--rsa-key-size ' . $array['rsa-key-size'] . ' \
 --webroot --webroot-path "' . $array['webroot-path'] . '" 2>&1';
 	
 	$content['ng_conf'] =
@@ -45,17 +63,19 @@ function get_commands($array) {
    	add_header              Front-End-Https   on;
    }
 }
-			
+';
+	if($add_www_domain)
+		$content['ng_conf'] .= '
 server {
    listen 443;
-   server_name www.' . $array['domain'] . ';
+   server_name ' . 'www.' . $array['domain'] . ';
    ssl on;
    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
    ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/fullchain.pem;
    ssl_certificate_key /etc/letsencrypt/live/' . $array['domain'] . '/privkey.pem;
 	
    location / {
-	proxy_pass http://www.' . $array['domain'] . ';
+	proxy_pass http://' . 'www.' . $array['domain'] . ';
 	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
 	proxy_set_header        X-Forwarded-Proto $scheme;
    	add_header              Front-End-Https   on;
@@ -185,7 +205,7 @@ function put_content_into_queue($content) {
 
 function create_renew_cert($servername) {
 	global $conf;
-	// get missing data's from VHFFS database
+	//  get missing data's from VHFFS database
 	$owner = VHFFS::get_owner_user_from_httpd_servername($servername);
 	$content = array(
 			'domain' => $servername,
