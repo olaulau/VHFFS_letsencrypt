@@ -42,6 +42,23 @@ VHFFS::create_table_if_needed();
 </head>
 <body>
 
+<?php
+//  print_r($_POST);
+
+if(!empty($_POST)) {
+	// 	var_dump($_POST); die;
+	if(!empty($_POST['domain'])) {
+		create_renew_cert($_POST['domain']);
+		$_SESSION['messages'][] = 'content added to queue. it will be treated as soon as possible.';
+	}
+	else {
+		$_SESSION['messages'][] = 'Please select a domain from any of the lists.';
+	}
+	
+}
+
+?>
+
 	<div id="messages"class="container" role="main">
 		<div style="position: absolute;">
 <?php
@@ -66,71 +83,46 @@ if(!empty($_SESSION['messages'])) {
 	<h3 class="form-signin-heading">(automatic certificate request and install for VHFFS hosting)</h3>
 </div>
 
-<?php
-//  print_r($_POST);
-if(empty($_POST)) {
-	?>
-	<h4 class="form-signin-heading col-sm-offset-1">Please choose a domain from any of the lists :</h4>
-	
-	<form action="" method="POST" name="easyform" class="">
-			
-			<div class="row form-group-lg">
-				<div class="col-sm-4 col-md-offset-1 text-center form-group-lg">
-					<h4><label for="alpha-domain" class="">domains (alphabetical order)</label></h4>
-				</div>
-				<div class="col-sm-4 col-md-offset-2 text-center form-group-lg">
-					<h4><label for="project-domain" class="">domains (by project)</label></h4>
-				</div>
-			</div>
-			
-			<div class="row">
-				<div class="col-sm-4 col-md-offset-1 input-group-lg">
-					<select id="alpha-domain" class="form-control" name="alpha-domain"> </select>
-				</div>
-				<div class="col-sm-4 col-md-offset-2 input-group-lg">
-					<select id="project-domain" class="form-control" name="project-domain">	</select>
-				</div>
-			</div>
-			
-			<div class="row">&nbsp;</div>
-			
-			<input id="domain" name="domain" value="" style="display:none;">
-			
-			<div class="row">&nbsp;</div>
-			
-			<div class="row">&nbsp;</div>
-			
-			<div class="container-fluid">
-				<div class="row">
-					<div class="col-sm-10 col-sm-offset-1">
-						<button class="btn btn-lg btn-success col-sm-8 col-sm-offset-2" type="submit"> <br/> SEND <br/> &nbsp; </button>
-					</div>
-				</div>
-			</div>
-			
-	</form>
-	<?php
-}
 
+<h4 class="form-signin-heading col-sm-offset-1">Please choose a domain from any of the lists :</h4>
 
-else {
-// 	var_dump($_POST); die;
-	if(!empty($_POST['domain'])) {
-		create_renew_cert($_POST['domain']);
-		echo 'content added to queue. it will be treated as soon as possible. <br/>';
-	}
-	else {
-		?>
-		<div class="alert alert-warning" role="alert">
-			<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-			<span class="sr-only">Error:</span>
-			Please select a domain from any of the lists.
+<form action="" method="POST" name="easyform" class="">
+		
+		<div class="row form-group-lg">
+			<div class="col-sm-4 col-md-offset-1 text-center form-group-lg">
+				<h4><label for="alpha-domain" class="">domains (alphabetical order)</label></h4>
+			</div>
+			<div class="col-sm-4 col-md-offset-2 text-center form-group-lg">
+				<h4><label for="project-domain" class="">domains (by project)</label></h4>
+			</div>
 		</div>
-		<?php
-	}
-	
-}
-?>
+		
+		<div class="row">
+			<div class="col-sm-4 col-md-offset-1 input-group-lg">
+				<select id="alpha-domain" class="form-control" name="alpha-domain"> </select>
+			</div>
+			<div class="col-sm-4 col-md-offset-2 input-group-lg">
+				<select id="project-domain" class="form-control" name="project-domain">	</select>
+			</div>
+		</div>
+		
+		<div class="row">&nbsp;</div>
+		
+		<input id="domain" name="domain" value="" style="display:none;">
+		
+		<div class="row">&nbsp;</div>
+		
+		<div class="row">&nbsp;</div>
+		
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-10 col-sm-offset-1">
+					<button class="btn btn-lg btn-success col-sm-8 col-sm-offset-2" type="submit"> <br/> SEND <br/> &nbsp; </button>
+				</div>
+			</div>
+		</div>
+		
+</form>
 
 
 </body>
