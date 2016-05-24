@@ -47,6 +47,8 @@ function get_commands($array) {
 '--rsa-key-size ' . $array['rsa-key-size'] . ' \
 --webroot --webroot-path "' . $array['webroot-path'] . '" 2>&1';
 	
+	$content['clean_command'] = 'rmdir ' . $array['webroot-path'] . '/.well-known/';
+	
 	$content['ng_conf'] =
 'server {
    listen 443;
@@ -119,6 +121,20 @@ function treat_content($content) {
 	echo 'let\'s encrypt command : ' . PHP_EOL;
 	echo $commands['le_command'] . PHP_EOL;
 	exec($commands['le_command'], $output, $return_var);
+	if($return_var !== 0) {
+		foreach ($output as $o) {
+			echo $o . PHP_EOL;
+			$error_buffer .= $o . PHP_EOL;
+		}
+		echo 'RETURN = ' .  $return_var . PHP_EOL;
+		$error_buffer .= 'RETURN = ' .  $return_var . PHP_EOL;
+		return $error_buffer;
+	}
+	
+	//  let's encrypt command execution
+	echo 'clean command : ' . PHP_EOL;
+	echo $commands['clean_command'] . PHP_EOL;
+	exec($commands['clean_command'], $output, $return_var);
 	if($return_var !== 0) {
 		foreach ($output as $o) {
 			echo $o . PHP_EOL;
