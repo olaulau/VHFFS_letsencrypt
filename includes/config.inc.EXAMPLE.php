@@ -3,7 +3,8 @@
 // copy to config.inc.php and fill-in values
 
 //let's encrypt
-$conf['letsencrypt_path'] = '/root/letsencrypt';
+$conf['letsencrypt_path'] = '/root/letsencrypt/';
+$conf['letsencrypt_bin'] = 'letsencrypt-auto'; // probably certbot
 $conf['rsa-key-size'] = 4096;
 $conf['le_expiration_delay'] = 90;
 $conf['le_recommended_renewal'] = 60;

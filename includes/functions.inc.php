@@ -35,7 +35,7 @@ function get_commands($array) {
 	$add_www_domain = check_sibling_DNS($array['domain']);
 	
 	$content['le_command'] =
-	$conf['letsencrypt_path'] . '/letsencrypt-auto certonly -v --text --agree-tos --renew-by-default \
+	$conf['letsencrypt_path'] . '/' . $conf['letsencrypt_bin'] . ' certonly -v --text --agree-tos --renew-by-default \
 --email "' . $array['email'] . '" \
 --domain "' . $array['domain'] . '" \
 ';
