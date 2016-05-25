@@ -53,7 +53,7 @@ if(!empty($_POST)) {
 		$_SESSION['messages'][] = 'content added to queue. it will be treated as soon as possible.';
 	}
 	else {
-		$_SESSION['messages'][] = 'Please select a domain from any of the lists.';
+		$_SESSION['messages'][] = 'Please select a domain from the list.';
 	}
 	
 }
@@ -85,27 +85,25 @@ if(!empty($_SESSION['messages'])) {
 </div>
 
 
-<h4 class="form-signin-heading col-sm-offset-1">Please choose a domain from any of the lists :</h4>
+<h4 class="form-signin-heading col-sm-offset-1">Please choose a domain from the list :</h4>
 
 <form action="" method="POST" name="easyform" class="">
 		
-		<div class="row form-group-lg">
-			<div class="col-sm-4 col-md-offset-1 text-center form-group-lg">
+		<div class="row col-sm-4 col-md-offset-4 text-center form-group-lg">
+			<label for="grouped_by_project">group domains by project</label>
+			<input type="checkbox" id="grouped_by_project" name="grouped_by_project" />
+			
+			<div id="domains_alpha">
 				<h4><label for="alpha-domain" class="">domains (alphabetical order)</label></h4>
-			</div>
-			<div class="col-sm-4 col-md-offset-2 text-center form-group-lg">
-				<h4><label for="project-domain" class="">domains (by project)</label></h4>
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col-sm-4 col-md-offset-1 input-group-lg">
 				<select id="alpha-domain" class="form-control" name="alpha-domain"> </select>
 			</div>
-			<div class="col-sm-4 col-md-offset-2 input-group-lg">
+			
+			<div id="domains_by_project">
+				<h4><label for="project-domain" class="">domains (by project)</label></h4>
 				<select id="project-domain" class="form-control" name="project-domain">	</select>
 			</div>
 		</div>
+
 		
 		<div class="row">&nbsp;</div>
 		

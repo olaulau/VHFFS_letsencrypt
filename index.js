@@ -55,4 +55,12 @@ $( document ).ready(function(){
 		return true;
 	});
 	
+	
+	//  switch between the 2 lists
+	$("#domains_by_project").hide();
+	$("input#grouped_by_project").click(function(){
+		$("#domains_alpha").toggle();
+		$("#domains_by_project").toggle();
+	});
+	
 });
