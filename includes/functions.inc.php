@@ -8,8 +8,8 @@ use PhpAmqpLib\Connection\AMQPConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
 
-function verify_parameters($array) {
-	if( empty($array['email']) || empty($array['domain']) || empty($array['webroot-path']) || empty($array['rsa-key-size']) ) {
+function verify_parameters($infos) {
+	if( empty($infos['email']) || empty($infos['domain']) || empty($infos['webroot-path']) || empty($infos['rsa-key-size']) ) {
 		die('parameter problem');
 	}
 	// TODO : check params
@@ -27,39 +27,39 @@ function check_sibling_DNS($domain) {
 }
 
 
-function get_commands($array) {
+function get_commands($infos) {
 	global $conf;
-	$content = array();
+	$commands = array();
 	
 	//  checks if the domain with WWW also resolves to the same host
-	$add_www_domain = check_sibling_DNS($array['domain']);
+	$add_www_domain = check_sibling_DNS($infos['domain']);
 	
-	$content['le_command'] =
+	$commands['le_command'] =
 	$conf['letsencrypt_path'] . '/' . $conf['letsencrypt_bin'] . ' certonly -v --text --agree-tos --renew-by-default \
---email "' . $array['email'] . '" \
---domain "' . $array['domain'] . '" \
+--email "' . $infos['email'] . '" \
+--domain "' . $infos['domain'] . '" \
 ';
 	if($add_www_domain)
-		$content['le_command'] .= '
---domain "www.' . $array['domain'] . '" \
+		$commands['le_command'] .= 
+'--domain "www.' . $infos['domain'] . '" \
 ';
-	$content['le_command'] .=
-'--rsa-key-size ' . $array['rsa-key-size'] . ' \
---webroot --webroot-path "' . $array['webroot-path'] . '" 2>&1';
+	$commands['le_command'] .=
+'--rsa-key-size ' . $infos['rsa-key-size'] . ' \
+--webroot --webroot-path "' . $infos['webroot-path'] . '" 2>&1';
 	
-	$content['clean_command'] = 'rmdir ' . $array['webroot-path'] . '/.well-known/';
+	$commands['clean_command'] = 'rmdir ' . $infos['webroot-path'] . '/.well-known/';
 	
-	$content['ng_conf'] =
+	$commands['ng_conf'] =
 'server {
    listen 443;
-   server_name ' . $array['domain'] . ';
+   server_name ' . $infos['domain'] . ';
    ssl on;
    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-   ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/fullchain.pem;
-   ssl_certificate_key /etc/letsencrypt/live/' . $array['domain'] . '/privkey.pem;
+   ssl_certificate /etc/letsencrypt/live/' . $infos['domain'] . '/fullchain.pem;
+   ssl_certificate_key /etc/letsencrypt/live/' . $infos['domain'] . '/privkey.pem;
 	
    location / {
-	proxy_pass http://' . $array['domain'] . ';
+	proxy_pass http://' . $infos['domain'] . ';
 	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
 	proxy_set_header        X-Forwarded-Proto $scheme;
    	add_header              Front-End-Https   on;
@@ -67,17 +67,17 @@ function get_commands($array) {
 }
 ';
 	if($add_www_domain)
-		$content['ng_conf'] .= '
+		$commands['ng_conf'] .= '
 server {
    listen 443;
-   server_name ' . 'www.' . $array['domain'] . ';
+   server_name ' . 'www.' . $infos['domain'] . ';
    ssl on;
    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-   ssl_certificate /etc/letsencrypt/live/' . $array['domain'] . '/fullchain.pem;
-   ssl_certificate_key /etc/letsencrypt/live/' . $array['domain'] . '/privkey.pem;
+   ssl_certificate /etc/letsencrypt/live/' . $infos['domain'] . '/fullchain.pem;
+   ssl_certificate_key /etc/letsencrypt/live/' . $infos['domain'] . '/privkey.pem;
 	
    location / {
-	proxy_pass http://' . 'www.' . $array['domain'] . ';
+	proxy_pass http://' . 'www.' . $infos['domain'] . ';
 	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
 	proxy_set_header        X-Forwarded-Proto $scheme;
    	add_header              Front-End-Https   on;
@@ -85,35 +85,35 @@ server {
 }
 ';
 	
-	$content['ng_conf_file'] = '/etc/nginx/sites-available/' . $array['domain'] . '';
+	$commands['ng_conf_file'] = '/etc/nginx/sites-available/' . $infos['domain'] . '';
 	
-	$content['ng_conf_enable'] = array(
-			'rm -f /etc/nginx/sites-enabled/' . $array['domain'], 
-			'ln -s /etc/nginx/sites-available/' . $array['domain'] . ' /etc/nginx/sites-enabled/' . $array['domain']
+	$commands['ng_conf_enable'] = array(
+			'rm -f /etc/nginx/sites-enabled/' . $infos['domain'], 
+			'ln -s /etc/nginx/sites-available/' . $infos['domain'] . ' /etc/nginx/sites-enabled/' . $infos['domain']
 	);			
 	
-	$content['ng_conf_activation'] = 'service nginx reload';
+	$commands['ng_conf_activation'] = 'service nginx reload';
 	
-	return $content;
+	return $commands;
 }
 
 
 /**
  * 
- * @param unknown $content
+ * @param unknown $infos
  * @return string error
  */
-function treat_content($content) {
+function create_cert($infos) {
 	echo PHP_EOL;
 	echo '-----------------------------------------------------' . PHP_EOL;
 	echo "DATE = " . date(DateTime::COOKIE) . PHP_EOL;
 	echo 'begining of treatment.' . PHP_EOL;
 	echo PHP_EOL;
 	
-	verify_parameters($content);
+	verify_parameters($infos);
 	
 	//  generate commands
-	$commands = get_commands($content);
+	$commands = get_commands($infos);
 // 	echo "<pre>"; print_r($commands); echo "/<pre>"; return;
 	$error_buffer = '';
 	
@@ -202,7 +202,7 @@ function treat_content($content) {
 }
 
 
-function put_content_into_queue($content) {
+function put_item_into_queue($action, $infos) {
 	global $conf;
 	$conn = new AMQPConnection($conf['rabbitmq_host'], $conf['rabbitmq_port'], $conf['rabbitmq_user'], $conf['rabbitmq_pass'], $conf['rabbitmq_vhost']);
 	$ch = $conn->channel();
@@ -211,7 +211,12 @@ function put_content_into_queue($content) {
 	$ch->exchange_declare($conf['rabbitmq_exchange'], 'direct', false, true, false);
 	$ch->queue_bind($conf['rabbitmq_queue'], $conf['rabbitmq_exchange']);
 	
-	$msg_body = json_encode($content);
+	$item = array(
+		'action' => $action,
+		'infos' => $infos,
+	);
+	
+	$msg_body = json_encode($item);
 	$msg = new AMQPMessage($msg_body, array('content_type' => 'text/plain', 'delivery_mode' => 2));
 	$ch->basic_publish($msg, $conf['rabbitmq_exchange']);
 	
@@ -223,14 +228,14 @@ function create_renew_cert($servername) {
 	global $conf;
 	//  get missing data's from VHFFS database
 	$owner = VHFFS::get_owner_user_from_httpd_servername($servername);
-	$content = array(
+	$infos = array(
 			'domain' => $servername,
 			'rsa-key-size' => $conf['rsa-key-size'],
 			'email' => $owner->mail,
 			'webroot-path' => VHFFS::get_webrootpath_from_servername($servername)
 	);
-	verify_parameters($content);
+	verify_parameters($infos);
 	
-	//  put content into queue
-	put_content_into_queue($content);
+	//  put item into queue
+	put_item_into_queue('create', $infos);
 }

@@ -35,22 +35,25 @@ function process_message($msg)
 	$content = json_decode($msg->body, TRUE);
 	// echo "<pre>"; print_r($content); echo "/<pre>";
 	
-	$db = new VHFFS();
-	$vh = $db->get_httpd_from_servername($content['domain']);
-	$vl = VHFFS_letsencrypt::get_from_httpd_id($vh->httpd_id);
-	if(empty($vl)) {
-		$vl = new VHFFS_letsencrypt($vh->httpd_id);
+	if($content['action'] === 'create') {
+		$infos = $content['infos'];
+		$db = new VHFFS();
+		$vh = $db->get_httpd_from_servername($infos['domain']);
+		$vl = VHFFS_letsencrypt::get_from_httpd_id($vh->httpd_id);
+		if(empty($vl)) {
+			$vl = new VHFFS_letsencrypt($vh->httpd_id);
+		}
+		
+		$error = create_cert($infos);
+		if(isset($error)) {
+			$vl->cert_error($error);
+		}
+		else {
+			$vl->cert_ok();
+		}
+		
+		$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 	}
-	
-	$error = treat_content($content);
-	if(isset($error)) {
-		$vl->cert_error($error);
-	}
-	else {
-		$vl->cert_ok();
-	}
-	
-	$msg->delivery_info['channel']->basic_ack($msg->delivery_info['delivery_tag']);
 }
 
 $ch->basic_consume($conf['rabbitmq_queue'], $consumer_tag, false, false, false, false, 'process_message');
