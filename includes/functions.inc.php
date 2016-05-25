@@ -27,7 +27,7 @@ function check_sibling_DNS($domain) {
 }
 
 
-function get_commands($infos) {
+function get_commands($infos, $renew=FALSE) {
 	global $conf;
 	$commands = array();
 	
@@ -35,9 +35,14 @@ function get_commands($infos) {
 	$add_www_domain = check_sibling_DNS($infos['domain']);
 	
 	$commands['le_command'] =
-	$conf['letsencrypt_path'] . '/' . $conf['letsencrypt_bin'] . ' certonly -v --text --agree-tos --renew-by-default \
---email "' . $infos['email'] . '" \
---domain "' . $infos['domain'] . '" \
+	$conf['letsencrypt_path'] . '/' . $conf['letsencrypt_bin'] . ' certonly -v --text --renew-by-default \
+';
+	if(!$renew)
+		$commands['le_command'] .=
+'--email "' . $infos['email'] . '" --agree-tos \
+';
+		$commands['le_command'] .=
+'--domain "' . $infos['domain'] . '" \
 ';
 	if($add_www_domain)
 		$commands['le_command'] .= 
@@ -51,45 +56,45 @@ function get_commands($infos) {
 	
 	$commands['ng_conf'] =
 'server {
-   listen 443;
-   server_name ' . $infos['domain'] . ';
-   ssl on;
-   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-   ssl_certificate /etc/letsencrypt/live/' . $infos['domain'] . '/fullchain.pem;
-   ssl_certificate_key /etc/letsencrypt/live/' . $infos['domain'] . '/privkey.pem;
+	listen 443;
+	server_name ' . $infos['domain'] . ';
+	ssl on;
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	ssl_certificate /etc/letsencrypt/live/' . $infos['domain'] . '/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/' . $infos['domain'] . '/privkey.pem;
 	
-   location / {
-	proxy_pass http://' . $infos['domain'] . ';
-	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header        X-Forwarded-Proto $scheme;
-   	add_header              Front-End-Https   on;
+	location / {
+		proxy_pass http://' . $infos['domain'] . ';
+		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header        X-Forwarded-Proto $scheme;
+		add_header              Front-End-Https   on;
    }
 }
 ';
 	if($add_www_domain)
 		$commands['ng_conf'] .= '
 server {
-   listen 443;
-   server_name ' . 'www.' . $infos['domain'] . ';
-   ssl on;
-   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-   ssl_certificate /etc/letsencrypt/live/' . $infos['domain'] . '/fullchain.pem;
-   ssl_certificate_key /etc/letsencrypt/live/' . $infos['domain'] . '/privkey.pem;
+	listen 443;
+	server_name ' . 'www.' . $infos['domain'] . ';
+	ssl on;
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	ssl_certificate /etc/letsencrypt/live/' . $infos['domain'] . '/fullchain.pem;
+	ssl_certificate_key /etc/letsencrypt/live/' . $infos['domain'] . '/privkey.pem;
 	
-   location / {
-	proxy_pass http://' . 'www.' . $infos['domain'] . ';
-	proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-	proxy_set_header        X-Forwarded-Proto $scheme;
-   	add_header              Front-End-Https   on;
+	location / {
+		proxy_pass http://' . 'www.' . $infos['domain'] . ';
+		proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_set_header        X-Forwarded-Proto $scheme;
+		add_header              Front-End-Https   on;
    }
 }
 ';
 	
-	$commands['ng_conf_file'] = '/etc/nginx/sites-available/' . $infos['domain'] . '';
+	$commands['ng_conf_file'] = '/etc/nginx/sites-available/' . $infos['domain'];
 	
 	$commands['ng_conf_enable'] = array(
-			'rm -f /etc/nginx/sites-enabled/' . $infos['domain'], 
-			'ln -s /etc/nginx/sites-available/' . $infos['domain'] . ' /etc/nginx/sites-enabled/' . $infos['domain']
+		'rm -f /etc/nginx/sites-enabled/' . $infos['domain'], 
+		'ln -s /etc/nginx/sites-available/' . $infos['domain'] . ' /etc/nginx/sites-enabled/' . $infos['domain']
 	);			
 	
 	$commands['ng_conf_activation'] = 'service nginx reload';
@@ -103,7 +108,7 @@ server {
  * @param unknown $infos
  * @return string error
  */
-function create_cert($infos) {
+function create_cert($infos, $renew=FALSE) {
 	echo PHP_EOL;
 	echo '-----------------------------------------------------' . PHP_EOL;
 	echo "DATE = " . date(DateTime::COOKIE) . PHP_EOL;
@@ -113,7 +118,7 @@ function create_cert($infos) {
 	verify_parameters($infos);
 	
 	//  generate commands
-	$commands = get_commands($infos);
+	$commands = get_commands($infos, $renew);
 // 	echo "<pre>"; print_r($commands); echo "/<pre>"; return;
 	$error_buffer = '';
 	
@@ -224,7 +229,7 @@ function put_item_into_queue($action, $infos) {
 	$conn->close();
 }
 
-function create_renew_cert($servername) {
+function ask_for_cert($action, $servername) {
 	global $conf;
 	//  get missing data's from VHFFS database
 	$owner = VHFFS::get_owner_user_from_httpd_servername($servername);
@@ -237,5 +242,5 @@ function create_renew_cert($servername) {
 	verify_parameters($infos);
 	
 	//  put item into queue
-	put_item_into_queue('create', $infos);
+	put_item_into_queue($action, $infos);
 }

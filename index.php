@@ -48,7 +48,8 @@ VHFFS::create_table_if_needed();
 if(!empty($_POST)) {
 	// 	var_dump($_POST); die;
 	if(!empty($_POST['domain'])) {
-		create_renew_cert($_POST['domain']);
+		//TODO verify posted domain
+		ask_for_cert('create', $_POST['domain']);
 		$_SESSION['messages'][] = 'content added to queue. it will be treated as soon as possible.';
 	}
 	else {

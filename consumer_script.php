@@ -35,7 +35,8 @@ function process_message($msg)
 	$content = json_decode($msg->body, TRUE);
 	// echo "<pre>"; print_r($content); echo "/<pre>";
 	
-	if($content['action'] === 'create') {
+	if($content['action'] === 'create' || $content['action'] === 'renew') {
+		$renew = ($content['action'] === 'renew');
 		$infos = $content['infos'];
 		$db = new VHFFS();
 		$vh = $db->get_httpd_from_servername($infos['domain']);
@@ -44,7 +45,7 @@ function process_message($msg)
 			$vl = new VHFFS_letsencrypt($vh->httpd_id);
 		}
 		
-		$error = create_cert($infos);
+		$error = create_cert($infos, $renew);
 		if(isset($error)) {
 			$vl->cert_error($error);
 		}
