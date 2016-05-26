@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../includes/autoload.inc.php';
+
 if(!empty($_GET['redirect'])) {
 	$redirect = $_GET['redirect'];
 }
