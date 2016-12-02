@@ -143,9 +143,15 @@ class VHFFS {
 			}
 			die;
 		}
-	
-		$res = $st->fetch(PDO::FETCH_OBJ);
-		return $res;
+		if($st !== FALSE) {
+			$res = $st->fetch(PDO::FETCH_OBJ);
+			return $res;
+		}
+		else {
+			die('FATAL ERROR : errorcode != 0 but statement = FALSE !');
+			return NULL;
+		}
+		
 	}
 	
 }
