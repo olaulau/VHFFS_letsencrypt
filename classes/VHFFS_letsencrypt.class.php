@@ -137,11 +137,20 @@ class VHFFS_letsencrypt {
 		$di = new DateInterval('P' . $conf['le_recommended_renewal'] . 'D');
 		$limit = $now->sub($di)->format('Y-m-d');
 		
+		$now = new DateTime();
+		$di = new DateInterval('P1D');
+		$yesturday = $now->sub($di)->format('Y-m-d');
+		
 		$sql = "
 		SELECT	vh.servername
 		FROM	vhffs_letsencrypt vl, vhffs_httpd vh
 		WHERE	vl.httpd_id = vh.httpd_id
-			AND	vl.certificate_date <= '" . $limit . "'";
+			AND	(
+				vl.certificate_date <= '" . $limit . "'
+				OR (	vl.certificate_date <= '" . $yesturday . "'
+					AND	error_log IS NOT NULL )
+			)";
+// 		var_dump($sql); die;
 		
 		$st = VHFFS_db::get()->query($sql);
 		$res = $st->fetchAll(PDO::FETCH_COLUMN, 'servername');
