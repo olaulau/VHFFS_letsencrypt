@@ -151,7 +151,6 @@ class VHFFS {
 			die('FATAL ERROR : errorcode != 0 but statement = FALSE !');
 			return NULL;
 		}
-		
 	}
 	
 }
