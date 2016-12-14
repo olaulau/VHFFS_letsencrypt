@@ -11,7 +11,7 @@ class Admin {
 	
 	public static function restrict($redirect) {
 		if(!Admin::is_admin()) {
-			header('Location: '.'auth/signin.php?redirect='.$redirect);
+			header('Location: '.'../auth/signin.php?redirect='.$redirect);
 		}
 	}
 }
