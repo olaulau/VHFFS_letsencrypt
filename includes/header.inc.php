@@ -17,7 +17,7 @@ $pages =
 		),
 	);
 
-function listPage() {
+function listPages() {
 	global $pages;
 	foreach ($pages as $page) {
 		?>
@@ -70,12 +70,12 @@ function listPage() {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">VHFFS - Let's Encrypt</a>
+          <a class="navbar-brand" href="index.php">VHFFS - Let's Encrypt</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <?php
-            listPage();
+            listPages();
             ?>
 			<!-- 
             <li class="dropdown">

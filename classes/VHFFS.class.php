@@ -5,6 +5,20 @@ require_once __DIR__ . '/../includes/autoload.inc.php';
 
 class VHFFS {
 	
+	public static function get_all_domains_info() {
+		$sql = '
+			SELECT		vh.servername, vl.certificate_date, vl.error_log, vu.username, vg.groupname
+			FROM		vhffs_httpd vh, vhffs_letsencrypt vl, vhffs_object vo, vhffs_users vu, vhffs_groups vg
+			WHERE		vh.object_id = vo.object_id
+				AND		vo.owner_uid = vu.uid
+				AND		vo.owner_gid = vg.gid
+			ORDER BY	vh.servername ASC';
+		$st = VHFFS_db::get()->query($sql);
+		//TODO continue here	
+		$res = $st->fetchAll(PDO::FETCH_COLUMN, 'servername');
+		return $res;
+	}
+	
 	public static function get_alpha_domains() {
 		$sql = '
 		SELECT		servername
