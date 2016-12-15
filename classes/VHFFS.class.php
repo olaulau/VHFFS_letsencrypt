@@ -9,13 +9,18 @@ class VHFFS {
 		$sql = '
 			SELECT		vh.servername, vl.certificate_date, vl.error_log, vu.username, vg.groupname
 			FROM		vhffs_httpd vh, vhffs_letsencrypt vl, vhffs_object vo, vhffs_users vu, vhffs_groups vg
-			WHERE		vh.object_id = vo.object_id
+			WHERE		vl.httpd_id = vh.httpd_id
+				AND		vh.object_id = vo.object_id
 				AND		vo.owner_uid = vu.uid
 				AND		vo.owner_gid = vg.gid
 			ORDER BY	vh.servername ASC';
 		$st = VHFFS_db::get()->query($sql);
-		//TODO continue here	
-		$res = $st->fetchAll(PDO::FETCH_COLUMN, 'servername');
+		$res = $st->fetchAll(PDO::FETCH_ASSOC);
+		
+		foreach ($res as &$row) {
+			//TODO set status according to certificate date and error_log
+			$row['status'] = 'active';
+		}
 		return $res;
 	}
 	
