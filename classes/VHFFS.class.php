@@ -36,6 +36,24 @@ class VHFFS {
 		return $res;
 	}
 	
+	public static function get_missing_domains() {
+		global $conf;
+		$sql = '
+			SELECT		vh.servername, vu.username, vg.groupname
+			FROM		vhffs_httpd vh, vhffs_object vo, vhffs_users vu, vhffs_groups vg
+			WHERE		vh.object_id = vo.object_id
+				AND		vo.owner_uid = vu.uid
+				AND		vo.owner_gid = vg.gid
+				AND		vh.httpd_id NOT IN (
+					SELECT	httpd_id
+					FROM	vhffs_letsencrypt
+				)
+			ORDER BY	vh.servername ASC';
+		$st = VHFFS_db::get()->query($sql);
+		$res = $st->fetchAll(PDO::FETCH_ASSOC);
+		return $res;
+	}
+	
 	public static function get_alpha_domains() {
 		$sql = '
 		SELECT		servername

@@ -16,6 +16,10 @@ $pages =
 			'url' => 'list_vhffs_domains.php'
 		),
 		array(
+			'label' => 'Missing',
+			'url' => 'missing_domains.php'
+		),
+		array(
 			'label' => 'Create',
 			'url' => 'create.php'
 		),
