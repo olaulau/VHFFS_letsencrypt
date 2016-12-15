@@ -6,6 +6,7 @@ require_once __DIR__ . '/../includes/autoload.inc.php';
 class VHFFS {
 	
 	public static function get_all_domains_info() {
+		global $conf;
 		$sql = '
 			SELECT		vh.servername, vl.certificate_date, vl.error_log, vu.username, vg.groupname
 			FROM		vhffs_httpd vh, vhffs_letsencrypt vl, vhffs_object vo, vhffs_users vu, vhffs_groups vg
@@ -18,8 +19,19 @@ class VHFFS {
 		$res = $st->fetchAll(PDO::FETCH_ASSOC);
 		
 		foreach ($res as &$row) {
-			//TODO set status according to certificate date and error_log
-			$row['status'] = 'active';
+			$cert_date = new DateTime($row['certificate_date']);
+			$now_date = new DateTime('now');
+			$cert_age = intval($cert_date->diff($now_date)->format('%a'));
+			
+			if($cert_age > $conf['le_expiration_delay']) {
+				$row['status'] = 'danger';
+			}
+			elseif($cert_age > $conf['le_recommended_renewal']) {
+				$row['status'] = 'warning';
+			}
+			else {
+				$row['status'] = 'success';
+			}
 		}
 		return $res;
 	}

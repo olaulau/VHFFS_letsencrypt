@@ -22,22 +22,6 @@ $tab = VHFFS::get_all_domains_info();
 		    <?php
 		}
 	    ?>
-	    
-	    <tr class="active">
-	    	<td>...</td> <td>...</td> <td>...</td> <td>...</td> <td>...</td>
-	    </tr>
-		<tr class="success">
-			<td>...</td> <td>...</td> <td>...</td> <td>...</td> <td>...</td>
-		</tr>
-		<tr class="warning">
-			<td>...</td> <td>...</td> <td>...</td> <td>...</td> <td>...</td>
-		</tr>
-		<tr class="danger">
-			<td>...</td> <td>...</td> <td>...</td> <td>...</td> <td>...</td>
-		</tr>
-		<tr class="info">
-			<td>...</td> <td>...</td> <td>...</td> <td>...</td> <td>...</td>
-		</tr>
 	</tbody>
 	</table>
 </div>
