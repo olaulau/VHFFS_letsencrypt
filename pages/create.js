@@ -7,7 +7,7 @@ $( document ).ready(function(){
 	
 	
 	//  AJAX alpha-domains list
-	$.getJSON( "ajax/alpha-domains.php", function( data ) {
+	$.getJSON( "../ajax/alpha-domains.php", function( data ) {
 		var items = [];
 		items.push("<option value=''></option>");
 		$.each(data, function(key, val) {
@@ -18,7 +18,7 @@ $( document ).ready(function(){
 	});
 	
 	//  AJAX project-domains list
-	$.getJSON( "ajax/project-domains.php", function( data ) {
+	$.getJSON( "../ajax/project-domains.php", function( data ) {
 		var items = [];
 		items.push("<option value=''></option>");
 		$.each(data, function(key, val) {

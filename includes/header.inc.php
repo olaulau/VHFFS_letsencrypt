@@ -8,12 +8,16 @@ VHFFS::create_table_if_needed();
 $pages =
 	array(
 		array(
-				'label' => 'Home',
-				'url' => 'index.php'
+			'label' => 'Home',
+			'url' => 'index.php'
 		),
 		array(
-				'label' => 'Create',
-				'url' => 'create.php'
+			'label' => 'List',
+			'url' => 'list_vhffs_domains.php'
+		),
+		array(
+			'label' => 'Create',
+			'url' => 'create.php'
 		),
 	);
 
@@ -56,8 +60,6 @@ function listPages() {
 	<script src="../external/jquery.min.js"></script>
 	<!-- Include all compiled plugins (below), or include individual files as needed -->
 	<script src="../external/bootstrap/js/bootstrap.min.js"></script>
-	
-	<script src="../index.js"></script>
 </head>
 <body>
 

@@ -1,7 +1,8 @@
 <?php
 require_once "../includes/header.inc.php";
 ?>
-
+	<script src="create.js"></script>
+	
 	<form action="" method="POST" name="easyform" class="container">
 		<div class="row col-sm-4 col-md-offset-4 text-center form-group-lg">
 			<h4 class="form-signin-heading">Please choose a domain from the list :</h4>
