@@ -207,6 +207,17 @@ function create_cert($infos, $renew=FALSE) {
 }
 
 
+function get_queue_length() {
+	global $conf;
+	$conn = new AMQPConnection($conf['rabbitmq_host'], $conf['rabbitmq_port'], $conf['rabbitmq_user'], $conf['rabbitmq_pass'], $conf['rabbitmq_vhost']);
+	$ch = $conn->channel();
+	$res = $ch->queue_declare($conf['rabbitmq_queue'], false, true, false, false);
+	$ch->close();
+	$conn->close();
+	return $res[1];
+}
+
+
 function put_item_into_queue($action, $infos) {
 	global $conf;
 	$conn = new AMQPConnection($conf['rabbitmq_host'], $conf['rabbitmq_port'], $conf['rabbitmq_user'], $conf['rabbitmq_pass'], $conf['rabbitmq_vhost']);
